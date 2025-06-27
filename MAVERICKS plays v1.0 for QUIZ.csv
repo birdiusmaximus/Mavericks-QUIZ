@@ -1,0 +1,151 @@
+Question #,Play Call,X,H,Y,Z,RB
+1,"Spread, H Pistons",Hitch/Fade,Jet sweep,Block,Block,Block
+2,"Trips Right, Y Detroit ",Block,Block,Jet sweep,Hitch/Fade,Block
+3,"Spread, Y Insert, Indiana",Block,Block,Lead Block,Hitch/Fade,Inside zone
+4,"Spread, Y Trap, Brooklyn",Block,Block,Trap Block,Hitch/Fade,C gap run
+5,"Trips Left, Y Jet, Chicago",Block,Block,Jet motion,Hitch/Fade,Counter
+6,"Spread, H Jet, Brooklyn, Smoke",Block,Block,Block,Screen,C gap run
+7,"Spread, H, Chargers",Glance,Hitch,Fade,Hitch,Shoot
+8,"Trips Right, H, Tennessee",Hitch to Whip,Corner,Seam,Hitch,Hitch
+9,"Spread, H, Steelers",Glance,Shoot,Hitch,Fade,Shoot
+10,"Spread, Washington",Slant,Wheel,Seam,Snag,Rail
+11,"Spread, Y Trap, Indiana",Block,Block,Trap Block,Hitch/Fade,Inside zone
+12,"Trips Left, MAX, H Trap, NY",Post,Trap Block,Post,Cross,Play Action 
+13,"Spread, Y Jet, Kansas City",Dig,Seam,Jet to Flat,Flag,Check Swing
+14,"Spread, LA Chargers",Hitch,Fade,Fade,Hitch,Shoot
+15,"Spread, Y Detroit",Block,Block,Jet sweep,Hitch/Fade,Block
+16,"Spread, Y Jet, Houston",Block,Block,Jet Block,Hitch,Swing
+17,"Spread, H Jet, Indiana, Smoke",Block,Jet Block,Block,Screen,Inside zone
+18,"Spread, Y Trap, Colorado",Screen,Block,Trap Block,Block,Play Action 
+19,"Trips Left, Y Jet, Chicago",Block,Block,Jet motion,Hitch/Fade,Counter
+20,"Spread, St Louis",Fade,Drag,Cross,Grass Post,Play Action 
+21,"Trips Right, H, Pittsburgh",Fade,Hitch,Slant,Glance,Shoot
+22,"Spread, H Jet, Baltimore",Dig,Shoot,Deep out,Fade,Play Action 
+23,"Spread, H, Freeze",Freeze,Freeze,Freeze,Freeze,Freeze
+24,"Spread, Indiana",Block,Block,Bubble,Block,Inside zone
+25,"Spread, Y Jet, Nets, Smoke",Screen,Block,Jet Block,Block,C gap run
+26,"Spread, Y, LA",Hitch,Fade,Hitch,Glance,Shoot
+27,"Trey Right, H, Washington",Slant,Wheel,Seam,Snag,Rail
+28,"Spread, H Jet, Chicago, Smoke",Block,Jet Block,Block,Screen,Counter
+29,"Spread,  Pistons",Block,Bubble,Block,Block,Outside zone
+30,"Spread, H Jet, Astros",Hitch/Fade,Jet Block,Block,Block,Swing
+31,"Spread, H Trap, Rockies",Block,Trap Block,Block,Screen,Play Action 
+32,"Spread, Detroit",Block,Block,Bubble,Block,Outside zone
+33,"Spread, Y Insert, Brooklyn",Block,Block,Lead Block,Block,C gap run
+34,"Trey Right, MAX, Vikings ",Deep out,Dig,Block,Deep out,Block
+35,"Spread, H Jet, Baltimore",Dig,Jet Shoot,Deep out,Fade,Play Action 
+36,"Deuce Left, MAX, St Louis",Fade,Cross,Block,Grass Post,Play Action 
+37,"Spread, MAX, Y Jet, Kansas ",Dig,Seam,Jet Shoot,Flag,Block
+38,"Trey Right, Commanders",Snag,Wheel,Seam,Slant,Rail
+39,"Trips Left, MAX, H Trap, NY",Post,Trap Block,Post,Cross,Block
+40,"Spread, H, Freeze",Freeze,Freeze,Freeze,Freeze,Freeze
+41,"Deuce Right, Steelers, Y Shoot",Glance,Slant,Shoot,Fade,Shoot
+42,"Spread, Y Jet, Indiana",Block,Block,Jet Block,Hitch/Fade,Inside zone
+43,"Deuce Right, MAX, Minnesota ",Deep out,Dig,Block,Deep out,Block
+44,"Empty Right, Tennessee + Titans",Hitch to Whip,Corner,Corner,Hitch to Whip,Seam
+45,"Trey Right, MAX, H, Washington",Slant,Wheel,Block,Snag,Rail
+46,"Deuce Left, MAX, Pittsburgh",Fade,Block,Slant,Slant,Block
+47,"Deuce Left, MAX, Titans",Hitch,Seam,Block,Hitch to Whip,Block
+48,"Deuce Right, H Jet, St Louis",Fade,Jet Shoot,Cross,Grass Post,Play Action 
+49,"Deuce Right, Minnesota",Deep out,Dig,Hith to Whip,Deep out,Hitch
+50,"Spread, H Insert, Pacers",Hitch/Fade,Lead Block,Block,Block,Inside zone
+51,"Spread, Indiana, Smoke",Screen,Block,Block,Screen,Inside zone
+52," Trips Right, Pacers",Hitch/Fade,Block,Block,Block,Inside zone
+53,"Trips Right, Y Detroit ",Block,Bubble,Outside zone,Block,Block
+54,"Spread, H Magic",Hitch/Fade,Block,Block,Block,Outside zone
+55,"Spread, Y, Kansas City",Dig,Seam,Shoot,Flag,Check Swing
+56,"Spread, Minnesota",Deep out,Dig,Hith to Whip,Deep out,Hitch
+57,"Trey Right, Titans",Hitch,Corner,Seam,Hitch to Whip,Hitch
+58,"Trips Right, Miami",Fade,Seam,Cross,Fade,Check Swing
+59,"Trey Left, Orioles",Fade,Deep out,Shoot,Dig,Play Action 
+60,"Trey Left, Colorado ",Screen,Block,Block,Block,Play Action 
+61,"Deuce Left, H, Houston",Block,Block,Block,Hitch,Swing
+62,"Trips Right, H, Tennessee",Hitch to Whip,Seam,Corner,Hitch,Hitch
+63,"Trips Left, Y, Washington",Slant,Wheel,Seam,Snag,Rail
+64,"Spread, Y, LA",Hitch,Fade,Hitch,Glance,Shoot
+65,"Spread, St Louis",Fade,Drag,Cross,Grass Post,Play Action 
+66,"Deuce Left, Yankees",Dig,Post,Block,Post,Play Action 
+67,"Deuce Right, Y, Houston",Block,Block,Block,Hitch,Swing
+68,"Trey Right, Y, Pittsburgh",Fade,Hitch,Slant,Glance,Shoot
+69,"Deuce Right, Y, Colorado ",Screen,Block,Block,Block,Play Action 
+70,"Trips Right, H, LA",Hitch,Fade,Drag,Glance,Shoot
+71,"Deuce Right, H, Titans",Hitch,Corner,Seam,Hitch to Whip,Hitch
+72,"Trips Right, Commanders TWIST",Snag,Seam,Wheel,Sluggo,Rail
+73,"Trips Left, Pittsburgh",Fade,Hitch,Shoot,Glance,Shoot
+74,"Spread, Y, Kansas",Dig,Seam,Shoot,Flag,Check Swing
+75,"Spread, Minnesota",Deep out,Dig,Hith to Whip,Deep out,Hitch
+76,"Trey Right, Baltimore",Dig,Deep out,Shoot,Fade,Play Action 
+77,"Spread, MAX, Pittsburgh",Fade,Hitch,Slant,Glance,Block
+78,"Trey Left, MAX, H, Chargers",Glance,Fade,Block,Hitch,Shoot
+79,"Trips Right, H, Washington TWIST",Sluggo,Wheel,Seam,Snag,Rail
+80,"Trips Left, H, Tennessee",Hitch to Whip,Seam,Corner,Hitch,Hitch
+81,"Deuce Right, MAX, Kasas City",Dig,Seam,Block,Flag,Block
+82,"Trips Right, H, Miami",Fade,Seam,Seam,Fade,Check Swing
+83,"Deuce Left, MAX, Yankees",Dig,Post,Block,Post,Play Action 
+84,"Deuce Left, H, Houston",Block,Block,Block,Hitch,Swing
+85,"Trey Right, MAX, H, Washington",Slant,Wheel,Block,Snag,Block
+86,"Deuce Left, MAX, Pittsburgh",Fade,Slant,Block,Glande,Block
+87,"Trey Left, MAX, H, Tennessee",Hitch to Whip,Seam,Block,Hitch,Block
+88,"Deuce Right, St Louis",Fade,Drag,Cross,Grass Post,Play Action 
+89,"Deuce Left, H, Houston",Block,Block,Block,Hitch,Swing
+90,"Trips Right, H, Miami",Fade,Seam,Seam,Fade,Check Swing
+91,"Deuce Left, MAX, Yankees",Dig,Post,Block,Post,Block
+92,"Spread, Washington",Slant,Wheel,Seam,Snag,Rail
+93,"Spread, Tennessee",Hitch to Whip,Corner,Seam,Hitch,Hitch
+94,"Spread, Y Trap, Colorado",Screen,Block,Trap Block,Block,Play Action 
+95,"Spread, Vikings",Deep out,Hitch to Whip,Dig,Deep out,Hitch
+96,"Trey Left, Orioles",Fade,Deep out,Shoot,Dig,Play Action 
+97,"Trips Right, Steelers",Glance,Shoot,Hitch,Fade,Shoot
+98,"Spread, Titans",Hitch,Seam,Corner,Hitch to Whip,Hitch
+99,"Trips Right, Y Detroit ",Block,Bubble,Jet sweep,Block,Block
+100,"Trips Left, Indiana",Block,Block,Block,Hitch/Fade,Inside zone
+101,"Trips Right, Detroit ",Block,Bubble,Block,Block,Outside zone
+102,"Trips Right, Pacers",Hitch/Fade,Block,Block,Block,Inside zone
+103,"Trips Left, Brooklyn",Block,Block,Block,Hitch/Fade,C gap run
+104,"Deuce Left, Y, Chicago",Block,Bubble,Block,Block,Counter
+105,"Spread, St Louis",Fade,Drag,Cross,Grass Post,Play Action 
+106,"Spread, H Trap, Rockies",Block,Trap Block,Block,Screen,Play Action 
+107,"Deuce Left, H Jet, Tennessee",Hitch to Whip,Corner,Seam,Hitch,Hitch
+108,"Trey Left, Y, Freeze",Freeze,Freeze,Freeze,Freeze,Freeze
+109,"Spread, H, Freeze",Freeze,Freeze,Freeze,Freeze,Freeze
+110,"Trips Right, H, Freeze",Freeze,Freeze,Freeze,Freeze,Freeze
+111,"Trey Right, MAX, Vikings ",Deep out,Dig,Block,Deep out,Block
+112,"Spread, H Jet, Baltimore",Dig,Shoot,Deep out,Fade,Play Action 
+113,"Deuce Left, MAX, St Louis",Fade,Cross,Block,Grass Post,Block
+114,"Spread, MAX, Y Jet, Kansas ",Dig,Seam,Shoot,Flag,Block
+115,"Trey Right, Commanders",Snag,Wheel,Seam,Slant,Rail
+116,"Trips Left, MAX, H Trap, NY",Post,Trap Block,Post,Cross,Play Action 
+117,"Deuce Right, MAX, NY",Post,Post,Block,Cross,Play Action 
+118,"Trey Left, MAX, H, Tennessee",Hitch to Whip,Seam,Block,Hitch,Block
+119,"Deuce Left, MAX, Chiefs",Flag,Seam,Block,Dig,Block
+120,"Trips Right, H, Miami",Fade,Seam,Seam,Fade,Check Swing
+121,"Bone, Y, Orlando",Block,Block,Block,Shoot,Outside zone
+122,"Bone, Pacers",Shoot,Block,Block,Block,Inside zone
+123,"Bone, H, Magic",Shoot,Block,Block,Block,Outside zone
+124,"Bone, H, Baltimore",Dig,Shoot,Deep out,Fade,Play Action 
+125,"Deuce Right, Magic",Block,Bubble,Block,Block,Outside zone
+126,"Deuce Right, Nets",Block,Bubble,Block,Block,C gap run
+127,"Deuce Right, Pacers",Block,Bubble,Block,Block,Inside zone
+128,"Deuce Right, Chicago",Block,Block,Bubble,Block,Counter
+129,"Deuce Left, Yankees",Dig,Post,Block,Post,Play Action 
+130,"Deuce Right, St Louis",Fade,Drarg,Cross,Grass Post,Play Action 
+131,"Trey Right, Y, Orlando",Block,Bubble,Block,Block,Outside zone
+132,"Trey Right, Pacers",Hitch/Fade,Block,Block,Block,Inside zone
+133,"Trey  Right, Baltimore",Dig,Deep out,Shoot,Fade,Play Action 
+134,"Trey Right, Y, Pittsburgh",Fade,Slant,Hitch,Glance,Shoot
+135,"Trey Left, Colorado ",Block,Screen,Block,Block,Play Action 
+136,"Spread, Orlando",Block,Block,Bubble,Block,Outside zone
+137,"Deuce Right, Magic",Block,Bubble,Block,Block,Outside zone
+138,"Trey Right, Y, Orlando",Block,Bubble,Block,Block,Outside zone
+139,"Deuce Right, Nets, Smoke",Screen,Block,Block,Screen,C gap run
+140,"Deuce Right, Pacers",Block,Bubble,Block,Block,Inside zone
+141,"Trey Right, Indiana",Block,Bubble,Block,Block,Inside zone
+142,"Spread, Chicago, Smoke",Screen,Block,Block,Screen,Counter
+143,"Spread, Bulls",Block,Bubble,Block,Block,Counter
+144,"Deuce Right, Y, Orlando",Block,Block,Block,Hitch/Fade,Outside zone
+145,"Bone, H, Magic",Shoot,Block,Block,Block,Outside zone
+146,"Trey Left, Pacers",Block,Bubble,Block,Block,Inside zone
+147,"Spread, Y, Bulls",Block,Bubble,Block,Block,Counter
+148,"Spread, Nets, Smoke",Screen,Block,Block,Screen,C gap run
+149,"Spread, Indiana",Block,Block,Bubble,Block,Inside zone
+150,"Deuce Right, Magic",Block,Bubble,Block,Block,Outside zone
