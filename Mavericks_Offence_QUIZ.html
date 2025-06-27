@@ -1,0 +1,8411 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mavericks Offence QUIZ</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff1f2;
+      color: #7f1d1d;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+    #quiz {
+      background: #ffe4e6;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+    }
+    #question {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+    button {
+      display: block;
+      width: 100%;
+      margin: 0.4rem 0;
+      padding: 0.7rem;
+      background: #ef4444;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button.correct {
+      background-color: #4ade80 !important;
+    }
+    button.incorrect {
+      background-color: #f87171 !important;
+    }
+    #score, #timer {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+      #quiz {
+        padding: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="role-select">
+    <h2>Select Your Position</h2>
+    <button onclick="startQuiz('X')">X</button>
+    <button onclick="startQuiz('H')">H</button>
+    <button onclick="startQuiz('Y')">Y</button>
+    <button onclick="startQuiz('Z')">Z</button>
+    <button onclick="startQuiz('RB')">RB</button>
+  </div>
+  <div id="quiz" style="display:none;">
+    <div id="question">Loading...</div>
+    <div id="options"></div>
+    <div id="score">Score: 0</div>
+    <div id="timer">Time: 0s</div>
+  </div>
+  <script>
+    let questions = [
+  {
+    "question": "Spread, H Pistons \u2014 what does X do?",
+    "options": [
+      "Hitch/Fade",
+      "Snag",
+      "Lead Block",
+      "Counter"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Pistons \u2014 what does H do?",
+    "options": [
+      "Jet motion",
+      "Swing",
+      "Freeze",
+      "Jet sweep"
+    ],
+    "correct": "Jet sweep",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Pistons \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Shoot",
+      "Flag",
+      "Lead Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Pistons \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Rail",
+      "Jet motion",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Pistons \u2014 what does RB do?",
+    "options": [
+      "Hitch to Whip",
+      "Block",
+      "BLock",
+      "Hitch"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does X do?",
+    "options": [
+      "Lead Block",
+      "Check Swing",
+      "Glande",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does H do?",
+    "options": [
+      "Shoot",
+      "Block",
+      "Screen",
+      "Seam"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does Y do?",
+    "options": [
+      "Jet Block",
+      "Shoot",
+      "Seam",
+      "Jet sweep"
+    ],
+    "correct": "Jet sweep",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does Z do?",
+    "options": [
+      "Counter",
+      "Swing",
+      "Cross",
+      "Hitch/Fade"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does RB do?",
+    "options": [
+      "Sluggo",
+      "Hitch/Fade",
+      "C gap run",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Insert, Indiana \u2014 what does X do?",
+    "options": [
+      "Inside zone",
+      "Block",
+      "Wheel",
+      "Play Action "
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Insert, Indiana \u2014 what does H do?",
+    "options": [
+      "Deep out",
+      "Block",
+      "Hitch to Whip",
+      "Jet sweep"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Insert, Indiana \u2014 what does Y do?",
+    "options": [
+      "Rail",
+      "Lead Block",
+      "Dig",
+      "Deep out"
+    ],
+    "correct": "Lead Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Insert, Indiana \u2014 what does Z do?",
+    "options": [
+      "Cross",
+      "Snag",
+      "Hitch/Fade",
+      "Jet Block"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Insert, Indiana \u2014 what does RB do?",
+    "options": [
+      "Outside zone",
+      "Inside zone",
+      "Lead Block",
+      "Seam"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Trap, Brooklyn \u2014 what does X do?",
+    "options": [
+      "Snag",
+      "Deep out",
+      "Rail",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Trap, Brooklyn \u2014 what does H do?",
+    "options": [
+      "Swing",
+      "Glance",
+      "Slant",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Trap, Brooklyn \u2014 what does Y do?",
+    "options": [
+      "Trap Block",
+      "C gap run",
+      "Hith to Whip",
+      "Outside zone"
+    ],
+    "correct": "Trap Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Trap, Brooklyn \u2014 what does Z do?",
+    "options": [
+      "Snag",
+      "Lead Block",
+      "Hitch/Fade",
+      "Corner"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Trap, Brooklyn \u2014 what does RB do?",
+    "options": [
+      "Glande",
+      "Trap Block",
+      "Flag",
+      "C gap run"
+    ],
+    "correct": "C gap run",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does X do?",
+    "options": [
+      "Trap Block",
+      "Lead Block",
+      "Block",
+      "Outside zone"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does H do?",
+    "options": [
+      "Shoot",
+      "Post",
+      "Block",
+      "Freeze"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does Y do?",
+    "options": [
+      "Hitch to Whip",
+      "C gap run",
+      "Jet motion",
+      "Jet to Flat"
+    ],
+    "correct": "Jet motion",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does Z do?",
+    "options": [
+      "Hitch/Fade",
+      "Hitch to Whip",
+      "Snag",
+      "Block"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does RB do?",
+    "options": [
+      "Bubble",
+      "Counter",
+      "Drarg",
+      "Flag"
+    ],
+    "correct": "Counter",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Jet, Brooklyn, Smoke \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Hith to Whip",
+      "Block",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Jet, Brooklyn, Smoke \u2014 what does H do?",
+    "options": [
+      "Deep out",
+      "Corner",
+      "Jet motion",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Jet, Brooklyn, Smoke \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Jet motion",
+      "Jet to Flat",
+      "Inside zone"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Jet, Brooklyn, Smoke \u2014 what does Z do?",
+    "options": [
+      "Outside zone",
+      "Jet Block",
+      "Screen",
+      "Bubble"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Jet, Brooklyn, Smoke \u2014 what does RB do?",
+    "options": [
+      "Hith to Whip",
+      "Counter",
+      "C gap run",
+      "Rail"
+    ],
+    "correct": "C gap run",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H, Chargers \u2014 what does X do?",
+    "options": [
+      "Hith to Whip",
+      "Glance",
+      "Inside zone",
+      "Deep out"
+    ],
+    "correct": "Glance",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H, Chargers \u2014 what does H do?",
+    "options": [
+      "Corner",
+      "Check Swing",
+      "Hitch",
+      "Cross"
+    ],
+    "correct": "Hitch",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H, Chargers \u2014 what does Y do?",
+    "options": [
+      "Wheel",
+      "Corner",
+      "Slant",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H, Chargers \u2014 what does Z do?",
+    "options": [
+      "Jet Block",
+      "Wheel",
+      "Hitch",
+      "Snag"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H, Chargers \u2014 what does RB do?",
+    "options": [
+      "Seam",
+      "Shoot",
+      "Glande",
+      "Snag"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does X do?",
+    "options": [
+      "Jet Block",
+      "Flag",
+      "Shoot",
+      "Hitch to Whip"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does H do?",
+    "options": [
+      "BLock",
+      "Corner",
+      "Slant",
+      "C gap run"
+    ],
+    "correct": "Corner",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does Y do?",
+    "options": [
+      "Seam",
+      "Block",
+      "Fade",
+      "Swing"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does Z do?",
+    "options": [
+      "C gap run",
+      "Drag",
+      "Corner",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Hitch",
+      "Counter",
+      "Seam"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H, Steelers \u2014 what does X do?",
+    "options": [
+      "Snag",
+      "Wheel",
+      "Dig",
+      "Glance"
+    ],
+    "correct": "Glance",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H, Steelers \u2014 what does H do?",
+    "options": [
+      "Hitch to Whip",
+      "Cross",
+      "BLock",
+      "Shoot"
+    ],
+    "correct": "Shoot",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H, Steelers \u2014 what does Y do?",
+    "options": [
+      "Check Swing",
+      "Hitch",
+      "Sluggo",
+      "Jet Shoot"
+    ],
+    "correct": "Hitch",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H, Steelers \u2014 what does Z do?",
+    "options": [
+      "Sluggo",
+      "Inside zone",
+      "Fade",
+      "Play Action "
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H, Steelers \u2014 what does RB do?",
+    "options": [
+      "Shoot",
+      "Snag",
+      "Cross",
+      "Trap Block"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does X do?",
+    "options": [
+      "Inside zone",
+      "Slant",
+      "Check Swing",
+      "Fade"
+    ],
+    "correct": "Slant",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does H do?",
+    "options": [
+      "Dig",
+      "Drarg",
+      "Wheel",
+      "Snag"
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does Y do?",
+    "options": [
+      "Seam",
+      "Outside zone",
+      "Jet to Flat",
+      "Swing"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does Z do?",
+    "options": [
+      "Cross",
+      "Post",
+      "Snag",
+      "Inside zone"
+    ],
+    "correct": "Snag",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does RB do?",
+    "options": [
+      "Rail",
+      "Flag",
+      "Dig",
+      "Play Action "
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Trap, Indiana \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Seam",
+      "Play Action ",
+      "Cross"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Trap, Indiana \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Hitch to Whip",
+      "Post",
+      "Hitch/Fade"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Trap, Indiana \u2014 what does Y do?",
+    "options": [
+      "Flag",
+      "Trap Block",
+      "Rail",
+      "Grass Post"
+    ],
+    "correct": "Trap Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Trap, Indiana \u2014 what does Z do?",
+    "options": [
+      "Cross",
+      "Hitch/Fade",
+      "Trap Block",
+      "Dig"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Trap, Indiana \u2014 what does RB do?",
+    "options": [
+      "Hitch",
+      "Trap Block",
+      "Inside zone",
+      "Glance"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does X do?",
+    "options": [
+      "Hitch",
+      "Dig",
+      "Post",
+      "Flag"
+    ],
+    "correct": "Post",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does H do?",
+    "options": [
+      "Trap Block",
+      "Deep out",
+      "Outside zone",
+      "Drag"
+    ],
+    "correct": "Trap Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does Y do?",
+    "options": [
+      "C gap run",
+      "Post",
+      "Slant",
+      "Hitch"
+    ],
+    "correct": "Post",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does Z do?",
+    "options": [
+      "Snag",
+      "Hitch",
+      "Corner",
+      "Cross"
+    ],
+    "correct": "Cross",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does RB do?",
+    "options": [
+      "Rail",
+      "Play Action ",
+      "Hitch",
+      "Hitch/Fade"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Jet, Kansas City \u2014 what does X do?",
+    "options": [
+      "Check Swing",
+      "Hith to Whip",
+      "Glande",
+      "Dig"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Jet, Kansas City \u2014 what does H do?",
+    "options": [
+      "BLock",
+      "Seam",
+      "Swing",
+      "Jet to Flat"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Jet, Kansas City \u2014 what does Y do?",
+    "options": [
+      "Jet motion",
+      "Bubble",
+      "Dig",
+      "Jet to Flat"
+    ],
+    "correct": "Jet to Flat",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Jet, Kansas City \u2014 what does Z do?",
+    "options": [
+      "Wheel",
+      "Hith to Whip",
+      "Slant",
+      "Flag"
+    ],
+    "correct": "Flag",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Jet, Kansas City \u2014 what does RB do?",
+    "options": [
+      "Deep out",
+      "Check Swing",
+      "Outside zone",
+      "Hitch"
+    ],
+    "correct": "Check Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, LA Chargers \u2014 what does X do?",
+    "options": [
+      "Jet sweep",
+      "Dig",
+      "Freeze",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "X"
+  },
+  {
+    "question": "Spread, LA Chargers \u2014 what does H do?",
+    "options": [
+      "Jet to Flat",
+      "Hith to Whip",
+      "Hitch",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "H"
+  },
+  {
+    "question": "Spread, LA Chargers \u2014 what does Y do?",
+    "options": [
+      "Hitch",
+      "Wheel",
+      "Post",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, LA Chargers \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Snag",
+      "Grass Post",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, LA Chargers \u2014 what does RB do?",
+    "options": [
+      "Shoot",
+      "Sluggo",
+      "Snag",
+      "Outside zone"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Detroit \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Jet Shoot",
+      "Lead Block",
+      "Screen"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Detroit \u2014 what does H do?",
+    "options": [
+      "Counter",
+      "Check Swing",
+      "Block",
+      "Play Action "
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Detroit \u2014 what does Y do?",
+    "options": [
+      "Snag",
+      "Dig",
+      "Jet sweep",
+      "Rail"
+    ],
+    "correct": "Jet sweep",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Detroit \u2014 what does Z do?",
+    "options": [
+      "Hitch/Fade",
+      "Bubble",
+      "Glande",
+      "Corner"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Detroit \u2014 what does RB do?",
+    "options": [
+      "Swing",
+      "Wheel",
+      "Glance",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Jet, Houston \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Hitch to Whip",
+      "Jet sweep",
+      "Deep out"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Jet, Houston \u2014 what does H do?",
+    "options": [
+      "Jet to Flat",
+      "Drag",
+      "Grass Post",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Jet, Houston \u2014 what does Y do?",
+    "options": [
+      "Flag",
+      "Lead Block",
+      "Jet Block",
+      "Jet motion"
+    ],
+    "correct": "Jet Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Jet, Houston \u2014 what does Z do?",
+    "options": [
+      "Drag",
+      "Slant",
+      "Hitch",
+      "Hitch/Fade"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Jet, Houston \u2014 what does RB do?",
+    "options": [
+      "Glance",
+      "Drarg",
+      "Check Swing",
+      "Swing"
+    ],
+    "correct": "Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Jet, Indiana, Smoke \u2014 what does X do?",
+    "options": [
+      "Hitch/Fade",
+      "Counter",
+      "Cross",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Jet, Indiana, Smoke \u2014 what does H do?",
+    "options": [
+      "Jet Block",
+      "Screen",
+      "Dig",
+      "Freeze"
+    ],
+    "correct": "Jet Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Jet, Indiana, Smoke \u2014 what does Y do?",
+    "options": [
+      "Shoot",
+      "Wheel",
+      "Swing",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Jet, Indiana, Smoke \u2014 what does Z do?",
+    "options": [
+      "Bubble",
+      "Cross",
+      "Screen",
+      "Slant"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Jet, Indiana, Smoke \u2014 what does RB do?",
+    "options": [
+      "Inside zone",
+      "Trap Block",
+      "Drag",
+      "Glance"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does X do?",
+    "options": [
+      "Inside zone",
+      "BLock",
+      "Glande",
+      "Screen"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does H do?",
+    "options": [
+      "Outside zone",
+      "Jet sweep",
+      "Block",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does Y do?",
+    "options": [
+      "Bubble",
+      "Trap Block",
+      "Jet Block",
+      "Jet to Flat"
+    ],
+    "correct": "Trap Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does Z do?",
+    "options": [
+      "Jet Block",
+      "Block",
+      "Jet Shoot",
+      "Lead Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does RB do?",
+    "options": [
+      "Drarg",
+      "Drag",
+      "Play Action ",
+      "Swing"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Play Action ",
+      "Wheel",
+      "Freeze"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does H do?",
+    "options": [
+      "Trap Block",
+      "Block",
+      "Hitch to Whip",
+      "Deep out"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does Y do?",
+    "options": [
+      "Jet motion",
+      "Jet to Flat",
+      "Play Action ",
+      "Sluggo"
+    ],
+    "correct": "Jet motion",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does Z do?",
+    "options": [
+      "Hitch/Fade",
+      "Jet Block",
+      "Freeze",
+      "Hitch to Whip"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, Y Jet, Chicago \u2014 what does RB do?",
+    "options": [
+      "Counter",
+      "Hith to Whip",
+      "Freeze",
+      "Glande"
+    ],
+    "correct": "Counter",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does X do?",
+    "options": [
+      "Trap Block",
+      "Drag",
+      "Fade",
+      "Dig"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does H do?",
+    "options": [
+      "Slant",
+      "Drag",
+      "Jet Shoot",
+      "Rail"
+    ],
+    "correct": "Drag",
+    "role": "H"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does Y do?",
+    "options": [
+      "Cross",
+      "Corner",
+      "Deep out",
+      "C gap run"
+    ],
+    "correct": "Cross",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does Z do?",
+    "options": [
+      "Deep out",
+      "Grass Post",
+      "Flag",
+      "Seam"
+    ],
+    "correct": "Grass Post",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does RB do?",
+    "options": [
+      "Hitch to Whip",
+      "Bubble",
+      "Glance",
+      "Play Action "
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, Pittsburgh \u2014 what does X do?",
+    "options": [
+      "Glande",
+      "Cross",
+      "BLock",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, Pittsburgh \u2014 what does H do?",
+    "options": [
+      "Lead Block",
+      "Counter",
+      "Cross",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, Pittsburgh \u2014 what does Y do?",
+    "options": [
+      "Slant",
+      "Hitch to Whip",
+      "BLock",
+      "Seam"
+    ],
+    "correct": "Slant",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, Pittsburgh \u2014 what does Z do?",
+    "options": [
+      "Snag",
+      "Slant",
+      "Glance",
+      "Wheel"
+    ],
+    "correct": "Glance",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, Pittsburgh \u2014 what does RB do?",
+    "options": [
+      "Glance",
+      "Jet sweep",
+      "Dig",
+      "Shoot"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does X do?",
+    "options": [
+      "Dig",
+      "C gap run",
+      "Cross",
+      "Swing"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does H do?",
+    "options": [
+      "Check Swing",
+      "Shoot",
+      "Rail",
+      "Seam"
+    ],
+    "correct": "Shoot",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does Y do?",
+    "options": [
+      "Deep out",
+      "Hitch to Whip",
+      "Grass Post",
+      "Swing"
+    ],
+    "correct": "Deep out",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does Z do?",
+    "options": [
+      "Glande",
+      "Fade",
+      "C gap run",
+      "Counter"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does RB do?",
+    "options": [
+      "Hitch/Fade",
+      "Jet Shoot",
+      "Wheel",
+      "Play Action "
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does X do?",
+    "options": [
+      "Play Action ",
+      "Freeze",
+      "Grass Post",
+      "Inside zone"
+    ],
+    "correct": "Freeze",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does H do?",
+    "options": [
+      "Freeze",
+      "Play Action ",
+      "Hitch to Whip",
+      "Snag"
+    ],
+    "correct": "Freeze",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does Y do?",
+    "options": [
+      "Trap Block",
+      "Freeze",
+      "Jet Block",
+      "Hith to Whip"
+    ],
+    "correct": "Freeze",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does Z do?",
+    "options": [
+      "Bubble",
+      "Freeze",
+      "Corner",
+      "Sluggo"
+    ],
+    "correct": "Freeze",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does RB do?",
+    "options": [
+      "Freeze",
+      "Seam",
+      "Trap Block",
+      "BLock"
+    ],
+    "correct": "Freeze",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does X do?",
+    "options": [
+      "Jet to Flat",
+      "Cross",
+      "Glande",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does H do?",
+    "options": [
+      "Grass Post",
+      "Flag",
+      "Sluggo",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does Y do?",
+    "options": [
+      "Cross",
+      "Freeze",
+      "Hith to Whip",
+      "Bubble"
+    ],
+    "correct": "Bubble",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does Z do?",
+    "options": [
+      "Sluggo",
+      "Counter",
+      "Bubble",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does RB do?",
+    "options": [
+      "Dig",
+      "Inside zone",
+      "Trap Block",
+      "Screen"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Jet, Nets, Smoke \u2014 what does X do?",
+    "options": [
+      "Post",
+      "Snag",
+      "Screen",
+      "Deep out"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Jet, Nets, Smoke \u2014 what does H do?",
+    "options": [
+      "Jet to Flat",
+      "Block",
+      "Counter",
+      "C gap run"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Jet, Nets, Smoke \u2014 what does Y do?",
+    "options": [
+      "Slant",
+      "Glande",
+      "Jet Block",
+      "Deep out"
+    ],
+    "correct": "Jet Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Jet, Nets, Smoke \u2014 what does Z do?",
+    "options": [
+      "Freeze",
+      "Block",
+      "Post",
+      "Glance"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Jet, Nets, Smoke \u2014 what does RB do?",
+    "options": [
+      "Hith to Whip",
+      "BLock",
+      "C gap run",
+      "Jet motion"
+    ],
+    "correct": "C gap run",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does X do?",
+    "options": [
+      "Hitch",
+      "Grass Post",
+      "Outside zone",
+      "BLock"
+    ],
+    "correct": "Hitch",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does H do?",
+    "options": [
+      "Jet Shoot",
+      "Fade",
+      "Hitch/Fade",
+      "Grass Post"
+    ],
+    "correct": "Fade",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does Y do?",
+    "options": [
+      "Counter",
+      "Jet motion",
+      "Jet Shoot",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does Z do?",
+    "options": [
+      "Jet sweep",
+      "Jet motion",
+      "BLock",
+      "Glance"
+    ],
+    "correct": "Glance",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does RB do?",
+    "options": [
+      "Wheel",
+      "Hitch to Whip",
+      "Shoot",
+      "Swing"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, H, Washington \u2014 what does X do?",
+    "options": [
+      "Slant",
+      "Outside zone",
+      "Glance",
+      "Jet Shoot"
+    ],
+    "correct": "Slant",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, H, Washington \u2014 what does H do?",
+    "options": [
+      "Snag",
+      "Wheel",
+      "Trap Block",
+      "Glande"
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, H, Washington \u2014 what does Y do?",
+    "options": [
+      "Shoot",
+      "Bubble",
+      "Slant",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, H, Washington \u2014 what does Z do?",
+    "options": [
+      "Rail",
+      "Cross",
+      "Hitch",
+      "Snag"
+    ],
+    "correct": "Snag",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, H, Washington \u2014 what does RB do?",
+    "options": [
+      "Rail",
+      "Swing",
+      "Glande",
+      "Fade"
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Jet, Chicago, Smoke \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Block",
+      "Jet sweep",
+      "Post"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Jet, Chicago, Smoke \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Jet Block",
+      "Outside zone",
+      "Glance"
+    ],
+    "correct": "Jet Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Jet, Chicago, Smoke \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "C gap run",
+      "Dig",
+      "Corner"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Jet, Chicago, Smoke \u2014 what does Z do?",
+    "options": [
+      "Post",
+      "Counter",
+      "Glande",
+      "Screen"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Jet, Chicago, Smoke \u2014 what does RB do?",
+    "options": [
+      "Jet Shoot",
+      "Corner",
+      "Snag",
+      "Counter"
+    ],
+    "correct": "Counter",
+    "role": "RB"
+  },
+  {
+    "question": "Spread,  Pistons \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Post",
+      "Screen",
+      "Jet sweep"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread,  Pistons \u2014 what does H do?",
+    "options": [
+      "Bubble",
+      "Jet motion",
+      "Rail",
+      "Wheel"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Spread,  Pistons \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Slant",
+      "Glande",
+      "Hitch/Fade"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread,  Pistons \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Shoot",
+      "Deep out",
+      "Wheel"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread,  Pistons \u2014 what does RB do?",
+    "options": [
+      "Drarg",
+      "Outside zone",
+      "Inside zone",
+      "Screen"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Jet, Astros \u2014 what does X do?",
+    "options": [
+      "Hitch/Fade",
+      "Drag",
+      "Seam",
+      "Rail"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Jet, Astros \u2014 what does H do?",
+    "options": [
+      "Outside zone",
+      "Jet Block",
+      "Inside zone",
+      "Drag"
+    ],
+    "correct": "Jet Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Jet, Astros \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Wheel",
+      "Jet Block",
+      "Trap Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Jet, Astros \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Shoot",
+      "Jet Block",
+      "Jet Shoot"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Jet, Astros \u2014 what does RB do?",
+    "options": [
+      "Deep out",
+      "Swing",
+      "BLock",
+      "Bubble"
+    ],
+    "correct": "Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Play Action ",
+      "Post",
+      "Drarg"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does H do?",
+    "options": [
+      "Slant",
+      "Inside zone",
+      "Jet Shoot",
+      "Trap Block"
+    ],
+    "correct": "Trap Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Jet to Flat",
+      "Freeze",
+      "Seam"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does Z do?",
+    "options": [
+      "Bubble",
+      "Block",
+      "Hith to Whip",
+      "Screen"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does RB do?",
+    "options": [
+      "Trap Block",
+      "Bubble",
+      "Play Action ",
+      "Drarg"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Detroit \u2014 what does X do?",
+    "options": [
+      "Slant",
+      "Play Action ",
+      "Fade",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Detroit \u2014 what does H do?",
+    "options": [
+      "Slant",
+      "BLock",
+      "Block",
+      "Lead Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Detroit \u2014 what does Y do?",
+    "options": [
+      "Hitch",
+      "Trap Block",
+      "Bubble",
+      "Freeze"
+    ],
+    "correct": "Bubble",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Detroit \u2014 what does Z do?",
+    "options": [
+      "Grass Post",
+      "Post",
+      "Screen",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Detroit \u2014 what does RB do?",
+    "options": [
+      "Deep out",
+      "Snag",
+      "Outside zone",
+      "Inside zone"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Insert, Brooklyn \u2014 what does X do?",
+    "options": [
+      "Jet Block",
+      "Hitch to Whip",
+      "Block",
+      "Sluggo"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Insert, Brooklyn \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Check Swing",
+      "Drarg",
+      "Bubble"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Insert, Brooklyn \u2014 what does Y do?",
+    "options": [
+      "Hith to Whip",
+      "Lead Block",
+      "Counter",
+      "Outside zone"
+    ],
+    "correct": "Lead Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Insert, Brooklyn \u2014 what does Z do?",
+    "options": [
+      "Dig",
+      "Swing",
+      "Block",
+      "Lead Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Insert, Brooklyn \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Screen",
+      "C gap run",
+      "Hitch to Whip"
+    ],
+    "correct": "C gap run",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does X do?",
+    "options": [
+      "Deep out",
+      "Jet Shoot",
+      "Block",
+      "Dig"
+    ],
+    "correct": "Deep out",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does H do?",
+    "options": [
+      "Corner",
+      "Cross",
+      "Dig",
+      "Fade"
+    ],
+    "correct": "Dig",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does Y do?",
+    "options": [
+      "Post",
+      "Hith to Whip",
+      "Block",
+      "Dig"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does Z do?",
+    "options": [
+      "Deep out",
+      "Jet Block",
+      "Block",
+      "Drag"
+    ],
+    "correct": "Deep out",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does RB do?",
+    "options": [
+      "Drarg",
+      "Play Action ",
+      "Check Swing",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does X do?",
+    "options": [
+      "Wheel",
+      "Seam",
+      "Post",
+      "Dig"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does H do?",
+    "options": [
+      "Hith to Whip",
+      "Drag",
+      "Jet to Flat",
+      "Jet Shoot"
+    ],
+    "correct": "Jet Shoot",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does Y do?",
+    "options": [
+      "Play Action ",
+      "BLock",
+      "Deep out",
+      "Slant"
+    ],
+    "correct": "Deep out",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Post",
+      "Block",
+      "Deep out"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Deep out",
+      "Trap Block",
+      "Jet Shoot"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does X do?",
+    "options": [
+      "Jet sweep",
+      "Deep out",
+      "Seam",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does H do?",
+    "options": [
+      "BLock",
+      "Hitch to Whip",
+      "Glande",
+      "Cross"
+    ],
+    "correct": "Cross",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does Y do?",
+    "options": [
+      "Screen",
+      "Block",
+      "C gap run",
+      "Hitch"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does Z do?",
+    "options": [
+      "Snag",
+      "Rail",
+      "Grass Post",
+      "Jet motion"
+    ],
+    "correct": "Grass Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Freeze",
+      "BLock",
+      "Hith to Whip"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Glande",
+      "Dig",
+      "Seam"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does H do?",
+    "options": [
+      "Fade",
+      "Check Swing",
+      "Seam",
+      "Jet motion"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does Y do?",
+    "options": [
+      "Jet Shoot",
+      "Jet to Flat",
+      "Outside zone",
+      "Fade"
+    ],
+    "correct": "Jet Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does Z do?",
+    "options": [
+      "Jet to Flat",
+      "Dig",
+      "Freeze",
+      "Flag"
+    ],
+    "correct": "Flag",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Counter",
+      "Hith to Whip",
+      "Glance"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does X do?",
+    "options": [
+      "Snag",
+      "Check Swing",
+      "Hitch/Fade",
+      "BLock"
+    ],
+    "correct": "Snag",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does H do?",
+    "options": [
+      "Jet Shoot",
+      "Wheel",
+      "Play Action ",
+      "BLock"
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does Y do?",
+    "options": [
+      "Deep out",
+      "Swing",
+      "Shoot",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does Z do?",
+    "options": [
+      "Counter",
+      "Slant",
+      "Deep out",
+      "Jet motion"
+    ],
+    "correct": "Slant",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does RB do?",
+    "options": [
+      "Glance",
+      "Rail",
+      "BLock",
+      "C gap run"
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Corner",
+      "Slant",
+      "Post"
+    ],
+    "correct": "Post",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does H do?",
+    "options": [
+      "Wheel",
+      "Trap Block",
+      "Sluggo",
+      "Hith to Whip"
+    ],
+    "correct": "Trap Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does Y do?",
+    "options": [
+      "Outside zone",
+      "Jet Block",
+      "Jet to Flat",
+      "Post"
+    ],
+    "correct": "Post",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does Z do?",
+    "options": [
+      "Slant",
+      "Jet Shoot",
+      "Hitch/Fade",
+      "Cross"
+    ],
+    "correct": "Cross",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does RB do?",
+    "options": [
+      "Drarg",
+      "Outside zone",
+      "Block",
+      "Snag"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Block",
+      "Freeze",
+      "Grass Post"
+    ],
+    "correct": "Freeze",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Seam",
+      "Check Swing",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does Y do?",
+    "options": [
+      "Jet to Flat",
+      "BLock",
+      "Hitch to Whip",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does Z do?",
+    "options": [
+      "Jet sweep",
+      "BLock",
+      "Slant",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does RB do?",
+    "options": [
+      "Seam",
+      "Post",
+      "Flag",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Steelers, Y Shoot \u2014 what does X do?",
+    "options": [
+      "Glance",
+      "Inside zone",
+      "Drarg",
+      "Lead Block"
+    ],
+    "correct": "Glance",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Steelers, Y Shoot \u2014 what does H do?",
+    "options": [
+      "Dig",
+      "Slant",
+      "Fade",
+      "Wheel"
+    ],
+    "correct": "Slant",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Steelers, Y Shoot \u2014 what does Y do?",
+    "options": [
+      "Swing",
+      "Shoot",
+      "Dig",
+      "Jet Block"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Steelers, Y Shoot \u2014 what does Z do?",
+    "options": [
+      "Deep out",
+      "Glande",
+      "Inside zone",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Steelers, Y Shoot \u2014 what does RB do?",
+    "options": [
+      "Drarg",
+      "Shoot",
+      "Jet motion",
+      "C gap run"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Jet, Indiana \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Dig",
+      "Hitch/Fade",
+      "Cross"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Jet, Indiana \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Grass Post",
+      "Play Action ",
+      "Cross"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Jet, Indiana \u2014 what does Y do?",
+    "options": [
+      "Freeze",
+      "Corner",
+      "Counter",
+      "Jet Block"
+    ],
+    "correct": "Jet Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Jet, Indiana \u2014 what does Z do?",
+    "options": [
+      "Check Swing",
+      "Hitch/Fade",
+      "Fade",
+      "Shoot"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Jet, Indiana \u2014 what does RB do?",
+    "options": [
+      "Outside zone",
+      "Bubble",
+      "Trap Block",
+      "Inside zone"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, MAX, Minnesota  \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Jet sweep",
+      "Outside zone",
+      "Deep out"
+    ],
+    "correct": "Deep out",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, MAX, Minnesota  \u2014 what does H do?",
+    "options": [
+      "Jet motion",
+      "Drarg",
+      "Dig",
+      "Hith to Whip"
+    ],
+    "correct": "Dig",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, MAX, Minnesota  \u2014 what does Y do?",
+    "options": [
+      "Fade",
+      "Swing",
+      "Block",
+      "Slant"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, MAX, Minnesota  \u2014 what does Z do?",
+    "options": [
+      "Snag",
+      "Corner",
+      "Block",
+      "Deep out"
+    ],
+    "correct": "Deep out",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, MAX, Minnesota  \u2014 what does RB do?",
+    "options": [
+      "Jet sweep",
+      "Block",
+      "Counter",
+      "Lead Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Empty Right, Tennessee + Titans \u2014 what does X do?",
+    "options": [
+      "Hitch to Whip",
+      "Freeze",
+      "Snag",
+      "Check Swing"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "X"
+  },
+  {
+    "question": "Empty Right, Tennessee + Titans \u2014 what does H do?",
+    "options": [
+      "Shoot",
+      "Corner",
+      "Glance",
+      "Deep out"
+    ],
+    "correct": "Corner",
+    "role": "H"
+  },
+  {
+    "question": "Empty Right, Tennessee + Titans \u2014 what does Y do?",
+    "options": [
+      "Corner",
+      "Screen",
+      "Fade",
+      "BLock"
+    ],
+    "correct": "Corner",
+    "role": "Y"
+  },
+  {
+    "question": "Empty Right, Tennessee + Titans \u2014 what does Z do?",
+    "options": [
+      "Hitch to Whip",
+      "Hitch/Fade",
+      "Block",
+      "Slant"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "Z"
+  },
+  {
+    "question": "Empty Right, Tennessee + Titans \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Hitch/Fade",
+      "Wheel",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does X do?",
+    "options": [
+      "BLock",
+      "Play Action ",
+      "Hitch to Whip",
+      "Slant"
+    ],
+    "correct": "Slant",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does H do?",
+    "options": [
+      "Drag",
+      "Bubble",
+      "Wheel",
+      "Play Action "
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does Y do?",
+    "options": [
+      "Drarg",
+      "Block",
+      "Hitch",
+      "Fade"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does Z do?",
+    "options": [
+      "Hitch/Fade",
+      "Cross",
+      "Glance",
+      "Snag"
+    ],
+    "correct": "Snag",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does RB do?",
+    "options": [
+      "Jet motion",
+      "Check Swing",
+      "Inside zone",
+      "Rail"
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Slant",
+      "Glance",
+      "Cross"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does H do?",
+    "options": [
+      "Bubble",
+      "Block",
+      "Cross",
+      "Swing"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does Y do?",
+    "options": [
+      "Slant",
+      "Trap Block",
+      "Play Action ",
+      "Jet Block"
+    ],
+    "correct": "Slant",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does Z do?",
+    "options": [
+      "Dig",
+      "Jet motion",
+      "Freeze",
+      "Slant"
+    ],
+    "correct": "Slant",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does RB do?",
+    "options": [
+      "Check Swing",
+      "Counter",
+      "C gap run",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, MAX, Titans \u2014 what does X do?",
+    "options": [
+      "Rail",
+      "Hitch",
+      "Wheel",
+      "Jet motion"
+    ],
+    "correct": "Hitch",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, MAX, Titans \u2014 what does H do?",
+    "options": [
+      "Counter",
+      "Seam",
+      "Cross",
+      "Glance"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, MAX, Titans \u2014 what does Y do?",
+    "options": [
+      "Inside zone",
+      "Block",
+      "Seam",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, MAX, Titans \u2014 what does Z do?",
+    "options": [
+      "Check Swing",
+      "Hitch to Whip",
+      "Snag",
+      "Block"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, MAX, Titans \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Rail",
+      "Play Action ",
+      "Counter"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, H Jet, St Louis \u2014 what does X do?",
+    "options": [
+      "Drarg",
+      "Jet Shoot",
+      "Post",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, H Jet, St Louis \u2014 what does H do?",
+    "options": [
+      "Jet Shoot",
+      "Block",
+      "Drag",
+      "Corner"
+    ],
+    "correct": "Jet Shoot",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, H Jet, St Louis \u2014 what does Y do?",
+    "options": [
+      "Drag",
+      "Hith to Whip",
+      "Cross",
+      "Bubble"
+    ],
+    "correct": "Cross",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, H Jet, St Louis \u2014 what does Z do?",
+    "options": [
+      "Cross",
+      "Outside zone",
+      "C gap run",
+      "Grass Post"
+    ],
+    "correct": "Grass Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, H Jet, St Louis \u2014 what does RB do?",
+    "options": [
+      "Jet motion",
+      "Deep out",
+      "Play Action ",
+      "Corner"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Minnesota \u2014 what does X do?",
+    "options": [
+      "Flag",
+      "Deep out",
+      "Check Swing",
+      "Freeze"
+    ],
+    "correct": "Deep out",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Minnesota \u2014 what does H do?",
+    "options": [
+      "Dig",
+      "Jet to Flat",
+      "Block",
+      "Fade"
+    ],
+    "correct": "Dig",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Minnesota \u2014 what does Y do?",
+    "options": [
+      "Hith to Whip",
+      "Screen",
+      "Glande",
+      "Drag"
+    ],
+    "correct": "Hith to Whip",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Minnesota \u2014 what does Z do?",
+    "options": [
+      "Deep out",
+      "Glande",
+      "Trap Block",
+      "Inside zone"
+    ],
+    "correct": "Deep out",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Minnesota \u2014 what does RB do?",
+    "options": [
+      "Glance",
+      "Hitch",
+      "Swing",
+      "Corner"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Insert, Pacers \u2014 what does X do?",
+    "options": [
+      "Hitch/Fade",
+      "Shoot",
+      "Rail",
+      "Flag"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Insert, Pacers \u2014 what does H do?",
+    "options": [
+      "Counter",
+      "Play Action ",
+      "Lead Block",
+      "Trap Block"
+    ],
+    "correct": "Lead Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Insert, Pacers \u2014 what does Y do?",
+    "options": [
+      "Snag",
+      "Fade",
+      "Block",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Insert, Pacers \u2014 what does Z do?",
+    "options": [
+      "Corner",
+      "Hitch/Fade",
+      "Block",
+      "BLock"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Insert, Pacers \u2014 what does RB do?",
+    "options": [
+      "Grass Post",
+      "Drag",
+      "Inside zone",
+      "Counter"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Indiana, Smoke \u2014 what does X do?",
+    "options": [
+      "Glande",
+      "Sluggo",
+      "Screen",
+      "Rail"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Indiana, Smoke \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Glande",
+      "Trap Block",
+      "Swing"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Indiana, Smoke \u2014 what does Y do?",
+    "options": [
+      "Fade",
+      "Block",
+      "Seam",
+      "Post"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Indiana, Smoke \u2014 what does Z do?",
+    "options": [
+      "Screen",
+      "Counter",
+      "Jet Block",
+      "Seam"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Indiana, Smoke \u2014 what does RB do?",
+    "options": [
+      "Glande",
+      "Inside zone",
+      "Block",
+      "Trap Block"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": " Trips Right, Pacers \u2014 what does X do?",
+    "options": [
+      "C gap run",
+      "Hitch to Whip",
+      "Check Swing",
+      "Hitch/Fade"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "X"
+  },
+  {
+    "question": " Trips Right, Pacers \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Flag",
+      "Dig",
+      "Inside zone"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": " Trips Right, Pacers \u2014 what does Y do?",
+    "options": [
+      "Drarg",
+      "Block",
+      "Screen",
+      "Slant"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": " Trips Right, Pacers \u2014 what does Z do?",
+    "options": [
+      "Seam",
+      "Dig",
+      "Sluggo",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": " Trips Right, Pacers \u2014 what does RB do?",
+    "options": [
+      "BLock",
+      "Inside zone",
+      "Lead Block",
+      "Shoot"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Deep out",
+      "Block",
+      "Wheel"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does H do?",
+    "options": [
+      "Corner",
+      "Bubble",
+      "Jet sweep",
+      "Grass Post"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does Y do?",
+    "options": [
+      "Counter",
+      "Hith to Whip",
+      "Outside zone",
+      "Dig"
+    ],
+    "correct": "Outside zone",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does Z do?",
+    "options": [
+      "Counter",
+      "Jet Shoot",
+      "Block",
+      "Hitch/Fade"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does RB do?",
+    "options": [
+      "Slant",
+      "Block",
+      "Drarg",
+      "Trap Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Magic \u2014 what does X do?",
+    "options": [
+      "Cross",
+      "Hitch/Fade",
+      "Slant",
+      "Wheel"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Magic \u2014 what does H do?",
+    "options": [
+      "Lead Block",
+      "Block",
+      "Hitch",
+      "BLock"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Magic \u2014 what does Y do?",
+    "options": [
+      "Hitch/Fade",
+      "Lead Block",
+      "Sluggo",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Magic \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Block",
+      "Seam",
+      "Wheel"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Magic \u2014 what does RB do?",
+    "options": [
+      "Outside zone",
+      "Slant",
+      "Shoot",
+      "Trap Block"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y, Kansas City \u2014 what does X do?",
+    "options": [
+      "Drarg",
+      "Post",
+      "Shoot",
+      "Dig"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y, Kansas City \u2014 what does H do?",
+    "options": [
+      "Bubble",
+      "Jet Block",
+      "Seam",
+      "Fade"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y, Kansas City \u2014 what does Y do?",
+    "options": [
+      "Bubble",
+      "Glande",
+      "Shoot",
+      "Drag"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y, Kansas City \u2014 what does Z do?",
+    "options": [
+      "Outside zone",
+      "C gap run",
+      "Flag",
+      "Jet Block"
+    ],
+    "correct": "Flag",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y, Kansas City \u2014 what does RB do?",
+    "options": [
+      "Jet Block",
+      "Block",
+      "Check Swing",
+      "Play Action "
+    ],
+    "correct": "Check Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does X do?",
+    "options": [
+      "Freeze",
+      "Deep out",
+      "Post",
+      "Cross"
+    ],
+    "correct": "Deep out",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does H do?",
+    "options": [
+      "Play Action ",
+      "Rail",
+      "Fade",
+      "Dig"
+    ],
+    "correct": "Dig",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does Y do?",
+    "options": [
+      "Hith to Whip",
+      "Seam",
+      "Screen",
+      "Drarg"
+    ],
+    "correct": "Hith to Whip",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does Z do?",
+    "options": [
+      "Drarg",
+      "Deep out",
+      "Glance",
+      "Lead Block"
+    ],
+    "correct": "Deep out",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does RB do?",
+    "options": [
+      "Drag",
+      "Slant",
+      "Cross",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Titans \u2014 what does X do?",
+    "options": [
+      "Hitch",
+      "Check Swing",
+      "Outside zone",
+      "Drarg"
+    ],
+    "correct": "Hitch",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Titans \u2014 what does H do?",
+    "options": [
+      "Jet Shoot",
+      "Inside zone",
+      "Corner",
+      "Wheel"
+    ],
+    "correct": "Corner",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Titans \u2014 what does Y do?",
+    "options": [
+      "Seam",
+      "Jet Block",
+      "C gap run",
+      "Inside zone"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Titans \u2014 what does Z do?",
+    "options": [
+      "Screen",
+      "Trap Block",
+      "Shoot",
+      "Hitch to Whip"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Titans \u2014 what does RB do?",
+    "options": [
+      "Corner",
+      "Shoot",
+      "Hitch",
+      "Swing"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, Miami \u2014 what does X do?",
+    "options": [
+      "Check Swing",
+      "Freeze",
+      "Fade",
+      "BLock"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, Miami \u2014 what does H do?",
+    "options": [
+      "Jet to Flat",
+      "Sluggo",
+      "Drarg",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, Miami \u2014 what does Y do?",
+    "options": [
+      "Drag",
+      "Block",
+      "Cross",
+      "Wheel"
+    ],
+    "correct": "Cross",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, Miami \u2014 what does Z do?",
+    "options": [
+      "Outside zone",
+      "Drarg",
+      "C gap run",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, Miami \u2014 what does RB do?",
+    "options": [
+      "Inside zone",
+      "Check Swing",
+      "Jet sweep",
+      "Hith to Whip"
+    ],
+    "correct": "Check Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Block",
+      "Deep out",
+      "Hitch/Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does H do?",
+    "options": [
+      "Deep out",
+      "Slant",
+      "Jet Block",
+      "Swing"
+    ],
+    "correct": "Deep out",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does Y do?",
+    "options": [
+      "Flag",
+      "Shoot",
+      "Check Swing",
+      "Wheel"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does Z do?",
+    "options": [
+      "Jet sweep",
+      "Dig",
+      "Rail",
+      "Slant"
+    ],
+    "correct": "Dig",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Jet Block",
+      "Jet Shoot",
+      "C gap run"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does X do?",
+    "options": [
+      "Snag",
+      "Screen",
+      "Jet motion",
+      "Corner"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does H do?",
+    "options": [
+      "Sluggo",
+      "Block",
+      "Corner",
+      "Deep out"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does Y do?",
+    "options": [
+      "Counter",
+      "Wheel",
+      "BLock",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Bubble",
+      "Deep out",
+      "Counter"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does RB do?",
+    "options": [
+      "Jet Shoot",
+      "Hitch to Whip",
+      "Play Action ",
+      "Check Swing"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does X do?",
+    "options": [
+      "Snag",
+      "Drag",
+      "Block",
+      "Screen"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does H do?",
+    "options": [
+      "Fade",
+      "Jet Block",
+      "Grass Post",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does Y do?",
+    "options": [
+      "Deep out",
+      "Wheel",
+      "Inside zone",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does Z do?",
+    "options": [
+      "Freeze",
+      "Play Action ",
+      "Outside zone",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Swing",
+      "Bubble",
+      "Wheel"
+    ],
+    "correct": "Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does X do?",
+    "options": [
+      "Slant",
+      "Hitch to Whip",
+      "Seam",
+      "Hitch/Fade"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does H do?",
+    "options": [
+      "Lead Block",
+      "Seam",
+      "Drag",
+      "BLock"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does Y do?",
+    "options": [
+      "Play Action ",
+      "Jet Shoot",
+      "Corner",
+      "Screen"
+    ],
+    "correct": "Corner",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does Z do?",
+    "options": [
+      "Hitch",
+      "Play Action ",
+      "Seam",
+      "Glande"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, Tennessee \u2014 what does RB do?",
+    "options": [
+      "Check Swing",
+      "Hitch",
+      "Seam",
+      "Freeze"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, Y, Washington \u2014 what does X do?",
+    "options": [
+      "Outside zone",
+      "Slant",
+      "Drarg",
+      "Glance"
+    ],
+    "correct": "Slant",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, Y, Washington \u2014 what does H do?",
+    "options": [
+      "Glande",
+      "Dig",
+      "Outside zone",
+      "Wheel"
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, Y, Washington \u2014 what does Y do?",
+    "options": [
+      "Corner",
+      "Seam",
+      "Jet Shoot",
+      "Hith to Whip"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, Y, Washington \u2014 what does Z do?",
+    "options": [
+      "Snag",
+      "Jet sweep",
+      "Play Action ",
+      "Screen"
+    ],
+    "correct": "Snag",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, Y, Washington \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "C gap run",
+      "Rail",
+      "Dig"
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does X do?",
+    "options": [
+      "Hitch",
+      "Jet sweep",
+      "Freeze",
+      "Wheel"
+    ],
+    "correct": "Hitch",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does H do?",
+    "options": [
+      "Screen",
+      "Jet Block",
+      "Slant",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does Y do?",
+    "options": [
+      "Jet Block",
+      "Jet Shoot",
+      "Hitch",
+      "Counter"
+    ],
+    "correct": "Hitch",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does Z do?",
+    "options": [
+      "Glance",
+      "Snag",
+      "Hith to Whip",
+      "Sluggo"
+    ],
+    "correct": "Glance",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y, LA \u2014 what does RB do?",
+    "options": [
+      "Screen",
+      "Jet Block",
+      "Shoot",
+      "Lead Block"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does X do?",
+    "options": [
+      "Trap Block",
+      "Drarg",
+      "Flag",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does H do?",
+    "options": [
+      "Screen",
+      "Drag",
+      "C gap run",
+      "Seam"
+    ],
+    "correct": "Drag",
+    "role": "H"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does Y do?",
+    "options": [
+      "Jet Shoot",
+      "Grass Post",
+      "Jet sweep",
+      "Cross"
+    ],
+    "correct": "Cross",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does Z do?",
+    "options": [
+      "Screen",
+      "Drag",
+      "Grass Post",
+      "Play Action "
+    ],
+    "correct": "Grass Post",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Trap Block",
+      "Lead Block",
+      "Check Swing"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does X do?",
+    "options": [
+      "Shoot",
+      "Dig",
+      "Hitch to Whip",
+      "Post"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Grass Post",
+      "Post",
+      "Cross"
+    ],
+    "correct": "Post",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does Y do?",
+    "options": [
+      "Flag",
+      "Block",
+      "Trap Block",
+      "Fade"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does Z do?",
+    "options": [
+      "Jet motion",
+      "Cross",
+      "Glande",
+      "Post"
+    ],
+    "correct": "Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Rail",
+      "Post",
+      "Dig"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Y, Houston \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Rail",
+      "Grass Post",
+      "Fade"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Y, Houston \u2014 what does H do?",
+    "options": [
+      "Outside zone",
+      "C gap run",
+      "Block",
+      "Bubble"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Y, Houston \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Drarg",
+      "Glance",
+      "Grass Post"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Y, Houston \u2014 what does Z do?",
+    "options": [
+      "Grass Post",
+      "Deep out",
+      "Outside zone",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Y, Houston \u2014 what does RB do?",
+    "options": [
+      "Glance",
+      "Swing",
+      "Hitch to Whip",
+      "Freeze"
+    ],
+    "correct": "Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does X do?",
+    "options": [
+      "Inside zone",
+      "Fade",
+      "Counter",
+      "Slant"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does H do?",
+    "options": [
+      "Drag",
+      "Glande",
+      "Corner",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does Y do?",
+    "options": [
+      "Shoot",
+      "Deep out",
+      "Slant",
+      "Freeze"
+    ],
+    "correct": "Slant",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does Z do?",
+    "options": [
+      "Hith to Whip",
+      "Glance",
+      "Freeze",
+      "Jet sweep"
+    ],
+    "correct": "Glance",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does RB do?",
+    "options": [
+      "Shoot",
+      "Grass Post",
+      "Fade",
+      "Corner"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Y, Colorado  \u2014 what does X do?",
+    "options": [
+      "Screen",
+      "Flag",
+      "Jet motion",
+      "Hitch/Fade"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Y, Colorado  \u2014 what does H do?",
+    "options": [
+      "Bubble",
+      "Fade",
+      "Sluggo",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Y, Colorado  \u2014 what does Y do?",
+    "options": [
+      "Screen",
+      "Inside zone",
+      "Block",
+      "Hith to Whip"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Y, Colorado  \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Freeze",
+      "Glance",
+      "Outside zone"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Y, Colorado  \u2014 what does RB do?",
+    "options": [
+      "Post",
+      "Play Action ",
+      "Screen",
+      "Shoot"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, LA \u2014 what does X do?",
+    "options": [
+      "Jet to Flat",
+      "Hitch",
+      "Jet sweep",
+      "Block"
+    ],
+    "correct": "Hitch",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, LA \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Hitch/Fade",
+      "Fade",
+      "Jet motion"
+    ],
+    "correct": "Fade",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, LA \u2014 what does Y do?",
+    "options": [
+      "Sluggo",
+      "Drag",
+      "Shoot",
+      "Hitch to Whip"
+    ],
+    "correct": "Drag",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, LA \u2014 what does Z do?",
+    "options": [
+      "Glance",
+      "Wheel",
+      "Seam",
+      "Rail"
+    ],
+    "correct": "Glance",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, LA \u2014 what does RB do?",
+    "options": [
+      "Shoot",
+      "Drag",
+      "Screen",
+      "Flag"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, H, Titans \u2014 what does X do?",
+    "options": [
+      "Glande",
+      "BLock",
+      "Outside zone",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, H, Titans \u2014 what does H do?",
+    "options": [
+      "Freeze",
+      "Rail",
+      "Glance",
+      "Corner"
+    ],
+    "correct": "Corner",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, H, Titans \u2014 what does Y do?",
+    "options": [
+      "Wheel",
+      "Seam",
+      "Grass Post",
+      "Deep out"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, H, Titans \u2014 what does Z do?",
+    "options": [
+      "Hitch to Whip",
+      "Corner",
+      "Trap Block",
+      "Jet Block"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, H, Titans \u2014 what does RB do?",
+    "options": [
+      "Hitch",
+      "Hitch/Fade",
+      "Play Action ",
+      "Bubble"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, Commanders TWIST \u2014 what does X do?",
+    "options": [
+      "Jet sweep",
+      "Corner",
+      "Snag",
+      "Slant"
+    ],
+    "correct": "Snag",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, Commanders TWIST \u2014 what does H do?",
+    "options": [
+      "Slant",
+      "Cross",
+      "Block",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, Commanders TWIST \u2014 what does Y do?",
+    "options": [
+      "Jet Shoot",
+      "Block",
+      "Check Swing",
+      "Wheel"
+    ],
+    "correct": "Wheel",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, Commanders TWIST \u2014 what does Z do?",
+    "options": [
+      "Cross",
+      "Screen",
+      "Sluggo",
+      "Jet Shoot"
+    ],
+    "correct": "Sluggo",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, Commanders TWIST \u2014 what does RB do?",
+    "options": [
+      "Jet Shoot",
+      "Drag",
+      "Snag",
+      "Rail"
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, Pittsburgh \u2014 what does X do?",
+    "options": [
+      "Snag",
+      "Fade",
+      "Drarg",
+      "Lead Block"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, Pittsburgh \u2014 what does H do?",
+    "options": [
+      "Jet Shoot",
+      "Jet sweep",
+      "Corner",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, Pittsburgh \u2014 what does Y do?",
+    "options": [
+      "Glande",
+      "Sluggo",
+      "Shoot",
+      "Outside zone"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, Pittsburgh \u2014 what does Z do?",
+    "options": [
+      "Hitch to Whip",
+      "Glance",
+      "Snag",
+      "BLock"
+    ],
+    "correct": "Glance",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, Pittsburgh \u2014 what does RB do?",
+    "options": [
+      "Lead Block",
+      "Shoot",
+      "Hith to Whip",
+      "Cross"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y, Kansas \u2014 what does X do?",
+    "options": [
+      "Glande",
+      "Hitch/Fade",
+      "Sluggo",
+      "Dig"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y, Kansas \u2014 what does H do?",
+    "options": [
+      "Deep out",
+      "Seam",
+      "Freeze",
+      "Fade"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y, Kansas \u2014 what does Y do?",
+    "options": [
+      "Inside zone",
+      "Jet Block",
+      "Shoot",
+      "Check Swing"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y, Kansas \u2014 what does Z do?",
+    "options": [
+      "Flag",
+      "Shoot",
+      "Inside zone",
+      "BLock"
+    ],
+    "correct": "Flag",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y, Kansas \u2014 what does RB do?",
+    "options": [
+      "Check Swing",
+      "Jet Block",
+      "Seam",
+      "Drag"
+    ],
+    "correct": "Check Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does X do?",
+    "options": [
+      "Deep out",
+      "Freeze",
+      "Grass Post",
+      "Glance"
+    ],
+    "correct": "Deep out",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does H do?",
+    "options": [
+      "Dig",
+      "Sluggo",
+      "Flag",
+      "Seam"
+    ],
+    "correct": "Dig",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does Y do?",
+    "options": [
+      "Freeze",
+      "Flag",
+      "Hith to Whip",
+      "Jet motion"
+    ],
+    "correct": "Hith to Whip",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does Z do?",
+    "options": [
+      "Hitch/Fade",
+      "Deep out",
+      "Shoot",
+      "Block"
+    ],
+    "correct": "Deep out",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Minnesota \u2014 what does RB do?",
+    "options": [
+      "Jet Shoot",
+      "Slant",
+      "Hitch",
+      "Trap Block"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Baltimore \u2014 what does X do?",
+    "options": [
+      "Deep out",
+      "Dig",
+      "Post",
+      "Jet to Flat"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Baltimore \u2014 what does H do?",
+    "options": [
+      "Deep out",
+      "Jet sweep",
+      "Screen",
+      "Wheel"
+    ],
+    "correct": "Deep out",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Baltimore \u2014 what does Y do?",
+    "options": [
+      "Shoot",
+      "Inside zone",
+      "Jet Shoot",
+      "Hith to Whip"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Baltimore \u2014 what does Z do?",
+    "options": [
+      "Flag",
+      "Fade",
+      "Seam",
+      "Cross"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Baltimore \u2014 what does RB do?",
+    "options": [
+      "Jet to Flat",
+      "Rail",
+      "Play Action ",
+      "Block"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, MAX, Pittsburgh \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Outside zone",
+      "Deep out",
+      "Counter"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Spread, MAX, Pittsburgh \u2014 what does H do?",
+    "options": [
+      "Hitch",
+      "Lead Block",
+      "Inside zone",
+      "Hitch to Whip"
+    ],
+    "correct": "Hitch",
+    "role": "H"
+  },
+  {
+    "question": "Spread, MAX, Pittsburgh \u2014 what does Y do?",
+    "options": [
+      "Wheel",
+      "Slant",
+      "Freeze",
+      "Seam"
+    ],
+    "correct": "Slant",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, MAX, Pittsburgh \u2014 what does Z do?",
+    "options": [
+      "Wheel",
+      "Deep out",
+      "Slant",
+      "Glance"
+    ],
+    "correct": "Glance",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, MAX, Pittsburgh \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Drag",
+      "Post",
+      "Corner"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, MAX, H, Chargers \u2014 what does X do?",
+    "options": [
+      "Deep out",
+      "Hitch/Fade",
+      "Glance",
+      "Counter"
+    ],
+    "correct": "Glance",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, MAX, H, Chargers \u2014 what does H do?",
+    "options": [
+      "Jet sweep",
+      "Shoot",
+      "Fade",
+      "Wheel"
+    ],
+    "correct": "Fade",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, MAX, H, Chargers \u2014 what does Y do?",
+    "options": [
+      "Shoot",
+      "Block",
+      "Deep out",
+      "Post"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, MAX, H, Chargers \u2014 what does Z do?",
+    "options": [
+      "Bubble",
+      "Glance",
+      "Hitch",
+      "Drag"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, MAX, H, Chargers \u2014 what does RB do?",
+    "options": [
+      "Cross",
+      "Dig",
+      "Shoot",
+      "Sluggo"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, Washington TWIST \u2014 what does X do?",
+    "options": [
+      "Screen",
+      "Glance",
+      "Grass Post",
+      "Sluggo"
+    ],
+    "correct": "Sluggo",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, Washington TWIST \u2014 what does H do?",
+    "options": [
+      "Wheel",
+      "Seam",
+      "Post",
+      "Drarg"
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, Washington TWIST \u2014 what does Y do?",
+    "options": [
+      "Swing",
+      "Seam",
+      "Post",
+      "Dig"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, Washington TWIST \u2014 what does Z do?",
+    "options": [
+      "Jet Shoot",
+      "Glance",
+      "Flag",
+      "Snag"
+    ],
+    "correct": "Snag",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, Washington TWIST \u2014 what does RB do?",
+    "options": [
+      "Bubble",
+      "Outside zone",
+      "Rail",
+      "Corner"
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, H, Tennessee \u2014 what does X do?",
+    "options": [
+      "Hith to Whip",
+      "Hitch to Whip",
+      "Dig",
+      "Jet sweep"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, H, Tennessee \u2014 what does H do?",
+    "options": [
+      "Jet Shoot",
+      "Wheel",
+      "C gap run",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, H, Tennessee \u2014 what does Y do?",
+    "options": [
+      "Corner",
+      "Deep out",
+      "Screen",
+      "Grass Post"
+    ],
+    "correct": "Corner",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, H, Tennessee \u2014 what does Z do?",
+    "options": [
+      "Inside zone",
+      "Sluggo",
+      "Deep out",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, H, Tennessee \u2014 what does RB do?",
+    "options": [
+      "BLock",
+      "Hitch",
+      "Cross",
+      "Jet sweep"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, MAX, Kasas City \u2014 what does X do?",
+    "options": [
+      "Glande",
+      "Dig",
+      "Swing",
+      "Flag"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, MAX, Kasas City \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Drag",
+      "Seam",
+      "Glande"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, MAX, Kasas City \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Jet to Flat",
+      "Jet sweep",
+      "Rail"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, MAX, Kasas City \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Flag",
+      "C gap run",
+      "Screen"
+    ],
+    "correct": "Flag",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, MAX, Kasas City \u2014 what does RB do?",
+    "options": [
+      "Bubble",
+      "Block",
+      "C gap run",
+      "Flag"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does X do?",
+    "options": [
+      "Drarg",
+      "Grass Post",
+      "Fade",
+      "Rail"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does H do?",
+    "options": [
+      "Post",
+      "Bubble",
+      "Seam",
+      "Corner"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does Y do?",
+    "options": [
+      "Jet Block",
+      "Seam",
+      "Grass Post",
+      "Wheel"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Swing",
+      "Trap Block",
+      "Flag"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does RB do?",
+    "options": [
+      "Screen",
+      "Drag",
+      "Flag",
+      "Check Swing"
+    ],
+    "correct": "Check Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does X do?",
+    "options": [
+      "Play Action ",
+      "Hitch",
+      "Flag",
+      "Dig"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does H do?",
+    "options": [
+      "Trap Block",
+      "Check Swing",
+      "Post",
+      "Jet Shoot"
+    ],
+    "correct": "Post",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does Y do?",
+    "options": [
+      "Rail",
+      "Jet sweep",
+      "Post",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does Z do?",
+    "options": [
+      "Post",
+      "Jet to Flat",
+      "Hitch",
+      "Block"
+    ],
+    "correct": "Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Rail",
+      "Bubble",
+      "Hitch to Whip"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does X do?",
+    "options": [
+      "Play Action ",
+      "Drag",
+      "Block",
+      "Corner"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Hith to Whip",
+      "Hitch",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does Y do?",
+    "options": [
+      "Hith to Whip",
+      "Block",
+      "Shoot",
+      "Inside zone"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does Z do?",
+    "options": [
+      "Seam",
+      "C gap run",
+      "Hitch",
+      "Snag"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does RB do?",
+    "options": [
+      "Flag",
+      "Deep out",
+      "Swing",
+      "Rail"
+    ],
+    "correct": "Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does X do?",
+    "options": [
+      "Screen",
+      "Fade",
+      "Slant",
+      "Bubble"
+    ],
+    "correct": "Slant",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does H do?",
+    "options": [
+      "Glande",
+      "Lead Block",
+      "Wheel",
+      "Screen"
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does Y do?",
+    "options": [
+      "Jet sweep",
+      "Counter",
+      "Deep out",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does Z do?",
+    "options": [
+      "Hitch/Fade",
+      "Snag",
+      "Jet Block",
+      "Sluggo"
+    ],
+    "correct": "Snag",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, MAX, H, Washington \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Trap Block",
+      "Jet to Flat",
+      "Corner"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does X do?",
+    "options": [
+      "Sluggo",
+      "Dig",
+      "Cross",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does H do?",
+    "options": [
+      "Jet Shoot",
+      "Hitch/Fade",
+      "Drag",
+      "Slant"
+    ],
+    "correct": "Slant",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does Y do?",
+    "options": [
+      "Jet Shoot",
+      "Sluggo",
+      "Slant",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does Z do?",
+    "options": [
+      "Jet Shoot",
+      "Jet sweep",
+      "Jet Block",
+      "Glande"
+    ],
+    "correct": "Glande",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, MAX, Pittsburgh \u2014 what does RB do?",
+    "options": [
+      "Cross",
+      "Block",
+      "Play Action ",
+      "Outside zone"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does X do?",
+    "options": [
+      "Glande",
+      "Screen",
+      "Check Swing",
+      "Hitch to Whip"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does H do?",
+    "options": [
+      "Seam",
+      "Trap Block",
+      "Snag",
+      "Outside zone"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does Y do?",
+    "options": [
+      "Jet Shoot",
+      "Block",
+      "Snag",
+      "Wheel"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does Z do?",
+    "options": [
+      "Deep out",
+      "Glande",
+      "Hitch",
+      "Rail"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does RB do?",
+    "options": [
+      "Sluggo",
+      "Bubble",
+      "Corner",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does X do?",
+    "options": [
+      "Corner",
+      "Flag",
+      "Outside zone",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does H do?",
+    "options": [
+      "Hitch to Whip",
+      "Bubble",
+      "Drag",
+      "BLock"
+    ],
+    "correct": "Drag",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does Y do?",
+    "options": [
+      "Trap Block",
+      "Flag",
+      "Corner",
+      "Cross"
+    ],
+    "correct": "Cross",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does Z do?",
+    "options": [
+      "Jet motion",
+      "Grass Post",
+      "Post",
+      "Jet to Flat"
+    ],
+    "correct": "Grass Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Grass Post",
+      "Hitch",
+      "Fade"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does X do?",
+    "options": [
+      "Sluggo",
+      "Block",
+      "Wheel",
+      "Jet to Flat"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does H do?",
+    "options": [
+      "Inside zone",
+      "Block",
+      "Shoot",
+      "Lead Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Jet Block",
+      "Slant",
+      "Snag"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does Z do?",
+    "options": [
+      "Sluggo",
+      "Cross",
+      "Deep out",
+      "Hitch"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, H, Houston \u2014 what does RB do?",
+    "options": [
+      "Deep out",
+      "Swing",
+      "Screen",
+      "Rail"
+    ],
+    "correct": "Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does X do?",
+    "options": [
+      "Drag",
+      "Post",
+      "C gap run",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does H do?",
+    "options": [
+      "Shoot",
+      "Seam",
+      "Hitch/Fade",
+      "Fade"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does Y do?",
+    "options": [
+      "Hitch/Fade",
+      "Seam",
+      "Slant",
+      "Lead Block"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Flag",
+      "Rail",
+      "Check Swing"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does RB do?",
+    "options": [
+      "Seam",
+      "Snag",
+      "Hith to Whip",
+      "Check Swing"
+    ],
+    "correct": "Check Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does X do?",
+    "options": [
+      "C gap run",
+      "Dig",
+      "Inside zone",
+      "Hitch/Fade"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Rail",
+      "Post",
+      "Glande"
+    ],
+    "correct": "Post",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Inside zone",
+      "Slant",
+      "Hitch"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does Z do?",
+    "options": [
+      "Glance",
+      "Inside zone",
+      "Check Swing",
+      "Post"
+    ],
+    "correct": "Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, MAX, Yankees \u2014 what does RB do?",
+    "options": [
+      "Seam",
+      "Hith to Whip",
+      "Jet motion",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Counter",
+      "Flag",
+      "Slant"
+    ],
+    "correct": "Slant",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does H do?",
+    "options": [
+      "Wheel",
+      "Jet sweep",
+      "Hith to Whip",
+      "Screen"
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does Y do?",
+    "options": [
+      "Seam",
+      "Hitch",
+      "Jet motion",
+      "BLock"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does Z do?",
+    "options": [
+      "Cross",
+      "Snag",
+      "Counter",
+      "Jet Block"
+    ],
+    "correct": "Snag",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Washington \u2014 what does RB do?",
+    "options": [
+      "Rail",
+      "Jet motion",
+      "Bubble",
+      "Drarg"
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Tennessee \u2014 what does X do?",
+    "options": [
+      "Hitch",
+      "Hitch to Whip",
+      "Snag",
+      "Rail"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Tennessee \u2014 what does H do?",
+    "options": [
+      "Seam",
+      "Dig",
+      "Corner",
+      "Slant"
+    ],
+    "correct": "Corner",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Tennessee \u2014 what does Y do?",
+    "options": [
+      "Jet Shoot",
+      "Deep out",
+      "Corner",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Tennessee \u2014 what does Z do?",
+    "options": [
+      "Hitch",
+      "Freeze",
+      "Seam",
+      "Play Action "
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Tennessee \u2014 what does RB do?",
+    "options": [
+      "Trap Block",
+      "Jet sweep",
+      "Hitch",
+      "Check Swing"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does X do?",
+    "options": [
+      "Screen",
+      "C gap run",
+      "Jet motion",
+      "Drarg"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does H do?",
+    "options": [
+      "Hitch to Whip",
+      "Slant",
+      "Block",
+      "Cross"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does Y do?",
+    "options": [
+      "Slant",
+      "Lead Block",
+      "Trap Block",
+      "Play Action "
+    ],
+    "correct": "Trap Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does Z do?",
+    "options": [
+      "Grass Post",
+      "Hith to Whip",
+      "Freeze",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y Trap, Colorado \u2014 what does RB do?",
+    "options": [
+      "Slant",
+      "Jet Block",
+      "Fade",
+      "Play Action "
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Vikings \u2014 what does X do?",
+    "options": [
+      "Inside zone",
+      "Deep out",
+      "Lead Block",
+      "Seam"
+    ],
+    "correct": "Deep out",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Vikings \u2014 what does H do?",
+    "options": [
+      "Hitch to Whip",
+      "Hitch",
+      "Jet to Flat",
+      "Outside zone"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Vikings \u2014 what does Y do?",
+    "options": [
+      "Dig",
+      "Cross",
+      "Play Action ",
+      "Rail"
+    ],
+    "correct": "Dig",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Vikings \u2014 what does Z do?",
+    "options": [
+      "Grass Post",
+      "Screen",
+      "Glance",
+      "Deep out"
+    ],
+    "correct": "Deep out",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Vikings \u2014 what does RB do?",
+    "options": [
+      "Dig",
+      "Flag",
+      "Hitch",
+      "Post"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does X do?",
+    "options": [
+      "Deep out",
+      "Fade",
+      "C gap run",
+      "Check Swing"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does H do?",
+    "options": [
+      "Slant",
+      "Freeze",
+      "Play Action ",
+      "Deep out"
+    ],
+    "correct": "Deep out",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does Y do?",
+    "options": [
+      "Shoot",
+      "Wheel",
+      "Glande",
+      "Drarg"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does Z do?",
+    "options": [
+      "Dig",
+      "C gap run",
+      "Hitch/Fade",
+      "Outside zone"
+    ],
+    "correct": "Dig",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, Orioles \u2014 what does RB do?",
+    "options": [
+      "Bubble",
+      "Freeze",
+      "Hitch",
+      "Play Action "
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, Steelers \u2014 what does X do?",
+    "options": [
+      "Outside zone",
+      "Wheel",
+      "Freeze",
+      "Glance"
+    ],
+    "correct": "Glance",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, Steelers \u2014 what does H do?",
+    "options": [
+      "Glande",
+      "Check Swing",
+      "Drag",
+      "Shoot"
+    ],
+    "correct": "Shoot",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, Steelers \u2014 what does Y do?",
+    "options": [
+      "Jet Shoot",
+      "Hitch",
+      "Flag",
+      "Screen"
+    ],
+    "correct": "Hitch",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, Steelers \u2014 what does Z do?",
+    "options": [
+      "Deep out",
+      "Glance",
+      "Fade",
+      "Play Action "
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, Steelers \u2014 what does RB do?",
+    "options": [
+      "C gap run",
+      "Jet motion",
+      "Slant",
+      "Shoot"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Titans \u2014 what does X do?",
+    "options": [
+      "Corner",
+      "Outside zone",
+      "Hitch",
+      "Trap Block"
+    ],
+    "correct": "Hitch",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Titans \u2014 what does H do?",
+    "options": [
+      "Wheel",
+      "Seam",
+      "Hith to Whip",
+      "Sluggo"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Titans \u2014 what does Y do?",
+    "options": [
+      "Glande",
+      "Hitch to Whip",
+      "Corner",
+      "Check Swing"
+    ],
+    "correct": "Corner",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Titans \u2014 what does Z do?",
+    "options": [
+      "Jet Block",
+      "Hitch to Whip",
+      "Deep out",
+      "Fade"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Titans \u2014 what does RB do?",
+    "options": [
+      "Jet Shoot",
+      "Wheel",
+      "Hitch",
+      "Cross"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Jet Shoot",
+      "Check Swing",
+      "Slant"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Seam",
+      "Play Action ",
+      "Bubble"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does Y do?",
+    "options": [
+      "Jet sweep",
+      "Sluggo",
+      "Counter",
+      "Dig"
+    ],
+    "correct": "Jet sweep",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Jet Block",
+      "Block",
+      "Jet to Flat"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, Y Detroit  \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Hith to Whip",
+      "Sluggo",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, Indiana \u2014 what does X do?",
+    "options": [
+      "Check Swing",
+      "Block",
+      "Slant",
+      "Grass Post"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, Indiana \u2014 what does H do?",
+    "options": [
+      "Play Action ",
+      "Jet Block",
+      "Flag",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, Indiana \u2014 what does Y do?",
+    "options": [
+      "Jet Block",
+      "Check Swing",
+      "Block",
+      "Freeze"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, Indiana \u2014 what does Z do?",
+    "options": [
+      "Bubble",
+      "Fade",
+      "Play Action ",
+      "Hitch/Fade"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, Indiana \u2014 what does RB do?",
+    "options": [
+      "Inside zone",
+      "Rail",
+      "Drarg",
+      "BLock"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, Detroit  \u2014 what does X do?",
+    "options": [
+      "Jet sweep",
+      "Inside zone",
+      "Block",
+      "Screen"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, Detroit  \u2014 what does H do?",
+    "options": [
+      "Grass Post",
+      "Snag",
+      "Bubble",
+      "Hitch to Whip"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, Detroit  \u2014 what does Y do?",
+    "options": [
+      "Outside zone",
+      "Flag",
+      "Check Swing",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, Detroit  \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Inside zone",
+      "Drag",
+      "Glande"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, Detroit  \u2014 what does RB do?",
+    "options": [
+      "Sluggo",
+      "Grass Post",
+      "Jet motion",
+      "Outside zone"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, Pacers \u2014 what does X do?",
+    "options": [
+      "Grass Post",
+      "Bubble",
+      "Check Swing",
+      "Hitch/Fade"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, Pacers \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Check Swing",
+      "Swing",
+      "Screen"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, Pacers \u2014 what does Y do?",
+    "options": [
+      "Hitch",
+      "Swing",
+      "Block",
+      "Bubble"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, Pacers \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Jet to Flat",
+      "Screen",
+      "Trap Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, Pacers \u2014 what does RB do?",
+    "options": [
+      "Corner",
+      "Inside zone",
+      "Jet Shoot",
+      "Drarg"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, Brooklyn \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Check Swing",
+      "Lead Block",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, Brooklyn \u2014 what does H do?",
+    "options": [
+      "Jet Block",
+      "Block",
+      "Corner",
+      "Shoot"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, Brooklyn \u2014 what does Y do?",
+    "options": [
+      "Grass Post",
+      "Block",
+      "Post",
+      "Play Action "
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, Brooklyn \u2014 what does Z do?",
+    "options": [
+      "Screen",
+      "Hitch/Fade",
+      "Flag",
+      "Dig"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, Brooklyn \u2014 what does RB do?",
+    "options": [
+      "Lead Block",
+      "Glance",
+      "Corner",
+      "C gap run"
+    ],
+    "correct": "C gap run",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, Y, Chicago \u2014 what does X do?",
+    "options": [
+      "Jet sweep",
+      "Block",
+      "Hitch",
+      "Jet Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, Y, Chicago \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Shoot",
+      "Bubble",
+      "Counter"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, Y, Chicago \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Rail",
+      "Slant",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, Y, Chicago \u2014 what does Z do?",
+    "options": [
+      "Bubble",
+      "Block",
+      "Play Action ",
+      "Jet Shoot"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, Y, Chicago \u2014 what does RB do?",
+    "options": [
+      "Post",
+      "Seam",
+      "Counter",
+      "Dig"
+    ],
+    "correct": "Counter",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does X do?",
+    "options": [
+      "Fade",
+      "Lead Block",
+      "Wheel",
+      "Rail"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does H do?",
+    "options": [
+      "Jet motion",
+      "Drag",
+      "Hitch to Whip",
+      "Sluggo"
+    ],
+    "correct": "Drag",
+    "role": "H"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does Y do?",
+    "options": [
+      "Sluggo",
+      "Jet sweep",
+      "Cross",
+      "Drag"
+    ],
+    "correct": "Cross",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does Z do?",
+    "options": [
+      "Grass Post",
+      "Slant",
+      "Corner",
+      "Rail"
+    ],
+    "correct": "Grass Post",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, St Louis \u2014 what does RB do?",
+    "options": [
+      "Jet Shoot",
+      "Flag",
+      "Play Action ",
+      "Glance"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Glance",
+      "Wheel",
+      "Freeze"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does H do?",
+    "options": [
+      "Hitch to Whip",
+      "Drarg",
+      "Glance",
+      "Trap Block"
+    ],
+    "correct": "Trap Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Outside zone",
+      "Hitch",
+      "Counter"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does Z do?",
+    "options": [
+      "Screen",
+      "Cross",
+      "Hitch to Whip",
+      "Bubble"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Trap, Rockies \u2014 what does RB do?",
+    "options": [
+      "Counter",
+      "Hitch",
+      "Swing",
+      "Play Action "
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, H Jet, Tennessee \u2014 what does X do?",
+    "options": [
+      "Flag",
+      "Glande",
+      "Hitch to Whip",
+      "Corner"
+    ],
+    "correct": "Hitch to Whip",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, H Jet, Tennessee \u2014 what does H do?",
+    "options": [
+      "Snag",
+      "Glande",
+      "Glance",
+      "Corner"
+    ],
+    "correct": "Corner",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, H Jet, Tennessee \u2014 what does Y do?",
+    "options": [
+      "Dig",
+      "Rail",
+      "Shoot",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, H Jet, Tennessee \u2014 what does Z do?",
+    "options": [
+      "Sluggo",
+      "C gap run",
+      "Hitch",
+      "Check Swing"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, H Jet, Tennessee \u2014 what does RB do?",
+    "options": [
+      "Shoot",
+      "Freeze",
+      "Hitch",
+      "Grass Post"
+    ],
+    "correct": "Hitch",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, Y, Freeze \u2014 what does X do?",
+    "options": [
+      "Cross",
+      "Trap Block",
+      "Lead Block",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, Y, Freeze \u2014 what does H do?",
+    "options": [
+      "Slant",
+      "Jet Shoot",
+      "Glande",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, Y, Freeze \u2014 what does Y do?",
+    "options": [
+      "Freeze",
+      "Swing",
+      "Drag",
+      "Lead Block"
+    ],
+    "correct": "Freeze",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, Y, Freeze \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Corner",
+      "Freeze",
+      "Play Action "
+    ],
+    "correct": "Freeze",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, Y, Freeze \u2014 what does RB do?",
+    "options": [
+      "Counter",
+      "Jet Block",
+      "Grass Post",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does X do?",
+    "options": [
+      "Freeze",
+      "Cross",
+      "Jet to Flat",
+      "Drag"
+    ],
+    "correct": "Freeze",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does H do?",
+    "options": [
+      "Drag",
+      "Freeze",
+      "Drarg",
+      "Jet motion"
+    ],
+    "correct": "Freeze",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does Y do?",
+    "options": [
+      "Jet Block",
+      "Play Action ",
+      "Freeze",
+      "Dig"
+    ],
+    "correct": "Freeze",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does Z do?",
+    "options": [
+      "Freeze",
+      "Dig",
+      "Hith to Whip",
+      "Bubble"
+    ],
+    "correct": "Freeze",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H, Freeze \u2014 what does RB do?",
+    "options": [
+      "Trap Block",
+      "Jet motion",
+      "Hith to Whip",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, Freeze \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Freeze",
+      "Drarg",
+      "Seam"
+    ],
+    "correct": "Freeze",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, Freeze \u2014 what does H do?",
+    "options": [
+      "Snag",
+      "Freeze",
+      "Shoot",
+      "Counter"
+    ],
+    "correct": "Freeze",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, Freeze \u2014 what does Y do?",
+    "options": [
+      "Play Action ",
+      "Hitch/Fade",
+      "Hith to Whip",
+      "Freeze"
+    ],
+    "correct": "Freeze",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, Freeze \u2014 what does Z do?",
+    "options": [
+      "Freeze",
+      "Trap Block",
+      "Hitch",
+      "Hith to Whip"
+    ],
+    "correct": "Freeze",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, Freeze \u2014 what does RB do?",
+    "options": [
+      "Freeze",
+      "Swing",
+      "Lead Block",
+      "Flag"
+    ],
+    "correct": "Freeze",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does X do?",
+    "options": [
+      "Wheel",
+      "Cross",
+      "Deep out",
+      "Trap Block"
+    ],
+    "correct": "Deep out",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does H do?",
+    "options": [
+      "Dig",
+      "Glande",
+      "Hitch",
+      "Sluggo"
+    ],
+    "correct": "Dig",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does Y do?",
+    "options": [
+      "Outside zone",
+      "Bubble",
+      "Shoot",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does Z do?",
+    "options": [
+      "Deep out",
+      "Shoot",
+      "Fade",
+      "Hitch"
+    ],
+    "correct": "Deep out",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, MAX, Vikings  \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Corner",
+      "Drag",
+      "Glance"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does X do?",
+    "options": [
+      "Corner",
+      "Counter",
+      "Dig",
+      "Glande"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does H do?",
+    "options": [
+      "Play Action ",
+      "Flag",
+      "Shoot",
+      "Cross"
+    ],
+    "correct": "Shoot",
+    "role": "H"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does Y do?",
+    "options": [
+      "Wheel",
+      "Deep out",
+      "Play Action ",
+      "Check Swing"
+    ],
+    "correct": "Deep out",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does Z do?",
+    "options": [
+      "Lead Block",
+      "Jet sweep",
+      "Fade",
+      "Jet to Flat"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, H Jet, Baltimore \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Hith to Whip",
+      "Grass Post",
+      "Sluggo"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does X do?",
+    "options": [
+      "Outside zone",
+      "BLock",
+      "Dig",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does H do?",
+    "options": [
+      "Snag",
+      "Cross",
+      "Trap Block",
+      "Rail"
+    ],
+    "correct": "Cross",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does Y do?",
+    "options": [
+      "Lead Block",
+      "Glande",
+      "Block",
+      "Jet sweep"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does Z do?",
+    "options": [
+      "Screen",
+      "Grass Post",
+      "Cross",
+      "Seam"
+    ],
+    "correct": "Grass Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, MAX, St Louis \u2014 what does RB do?",
+    "options": [
+      "Sluggo",
+      "Seam",
+      "Block",
+      "Jet Block"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does X do?",
+    "options": [
+      "Rail",
+      "Deep out",
+      "Dig",
+      "Drarg"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does H do?",
+    "options": [
+      "Post",
+      "Screen",
+      "Snag",
+      "Seam"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does Y do?",
+    "options": [
+      "Check Swing",
+      "Fade",
+      "Shoot",
+      "BLock"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does Z do?",
+    "options": [
+      "Outside zone",
+      "Slant",
+      "Jet motion",
+      "Flag"
+    ],
+    "correct": "Flag",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, MAX, Y Jet, Kansas  \u2014 what does RB do?",
+    "options": [
+      "Inside zone",
+      "Block",
+      "Jet motion",
+      "Jet to Flat"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does X do?",
+    "options": [
+      "Post",
+      "Snag",
+      "Corner",
+      "Shoot"
+    ],
+    "correct": "Snag",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does H do?",
+    "options": [
+      "Hith to Whip",
+      "Wheel",
+      "Lead Block",
+      "C gap run"
+    ],
+    "correct": "Wheel",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does Y do?",
+    "options": [
+      "Seam",
+      "Deep out",
+      "Shoot",
+      "Corner"
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does Z do?",
+    "options": [
+      "Bubble",
+      "Jet to Flat",
+      "Slant",
+      "Jet sweep"
+    ],
+    "correct": "Slant",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Commanders \u2014 what does RB do?",
+    "options": [
+      "Flag",
+      "Rail",
+      "Lead Block",
+      "Bubble"
+    ],
+    "correct": "Rail",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does X do?",
+    "options": [
+      "Post",
+      "Glance",
+      "Jet Shoot",
+      "Outside zone"
+    ],
+    "correct": "Post",
+    "role": "X"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does H do?",
+    "options": [
+      "Hith to Whip",
+      "Lead Block",
+      "Trap Block",
+      "Rail"
+    ],
+    "correct": "Trap Block",
+    "role": "H"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does Y do?",
+    "options": [
+      "Drag",
+      "Post",
+      "Freeze",
+      "Jet sweep"
+    ],
+    "correct": "Post",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does Z do?",
+    "options": [
+      "Wheel",
+      "Deep out",
+      "Cross",
+      "Hitch/Fade"
+    ],
+    "correct": "Cross",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Left, MAX, H Trap, NY \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Counter",
+      "Cross",
+      "Hitch to Whip"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, MAX, NY \u2014 what does X do?",
+    "options": [
+      "Trap Block",
+      "Drarg",
+      "Hith to Whip",
+      "Post"
+    ],
+    "correct": "Post",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, MAX, NY \u2014 what does H do?",
+    "options": [
+      "Lead Block",
+      "Check Swing",
+      "Post",
+      "Glance"
+    ],
+    "correct": "Post",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, MAX, NY \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Inside zone",
+      "Freeze",
+      "Jet Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, MAX, NY \u2014 what does Z do?",
+    "options": [
+      "Hitch to Whip",
+      "Cross",
+      "Bubble",
+      "Outside zone"
+    ],
+    "correct": "Cross",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, MAX, NY \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Lead Block",
+      "Slant",
+      "Flag"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does X do?",
+    "options": [
+      "Shoot",
+      "Hitch to Whip",
+      "Deep out",
+      "Play Action "
+    ],
+    "correct": "Hitch to Whip",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Seam",
+      "Fade",
+      "Inside zone"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does Y do?",
+    "options": [
+      "Corner",
+      "Slant",
+      "Counter",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does Z do?",
+    "options": [
+      "Hith to Whip",
+      "Lead Block",
+      "Hitch",
+      "Inside zone"
+    ],
+    "correct": "Hitch",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, MAX, H, Tennessee \u2014 what does RB do?",
+    "options": [
+      "Seam",
+      "Jet sweep",
+      "Block",
+      "Fade"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, MAX, Chiefs \u2014 what does X do?",
+    "options": [
+      "Grass Post",
+      "Screen",
+      "Flag",
+      "Sluggo"
+    ],
+    "correct": "Flag",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, MAX, Chiefs \u2014 what does H do?",
+    "options": [
+      "Seam",
+      "Cross",
+      "Shoot",
+      "Jet motion"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, MAX, Chiefs \u2014 what does Y do?",
+    "options": [
+      "BLock",
+      "Slant",
+      "Outside zone",
+      "Freeze"
+    ],
+    "correct": "BLock",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, MAX, Chiefs \u2014 what does Z do?",
+    "options": [
+      "Dig",
+      "Swing",
+      "Jet Block",
+      "Drag"
+    ],
+    "correct": "Dig",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, MAX, Chiefs \u2014 what does RB do?",
+    "options": [
+      "BLock",
+      "Block",
+      "Outside zone",
+      "Post"
+    ],
+    "correct": "Block",
+    "role": "RB"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does X do?",
+    "options": [
+      "Freeze",
+      "Fade",
+      "Trap Block",
+      "Counter"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does H do?",
+    "options": [
+      "Drag",
+      "Seam",
+      "Sluggo",
+      "Hitch"
+    ],
+    "correct": "Seam",
+    "role": "H"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does Y do?",
+    "options": [
+      "Grass Post",
+      "Seam",
+      "Check Swing",
+      "Play Action "
+    ],
+    "correct": "Seam",
+    "role": "Y"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does Z do?",
+    "options": [
+      "Seam",
+      "Fade",
+      "Jet to Flat",
+      "Rail"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trips Right, H, Miami \u2014 what does RB do?",
+    "options": [
+      "Glance",
+      "BLock",
+      "Drarg",
+      "Check Swing"
+    ],
+    "correct": "Check Swing",
+    "role": "RB"
+  },
+  {
+    "question": "Bone, Y, Orlando \u2014 what does X do?",
+    "options": [
+      "Hitch/Fade",
+      "Grass Post",
+      "BLock",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Bone, Y, Orlando \u2014 what does H do?",
+    "options": [
+      "Snag",
+      "Block",
+      "Jet motion",
+      "Swing"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Bone, Y, Orlando \u2014 what does Y do?",
+    "options": [
+      "Hith to Whip",
+      "Check Swing",
+      "Snag",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Bone, Y, Orlando \u2014 what does Z do?",
+    "options": [
+      "Outside zone",
+      "Sluggo",
+      "Block",
+      "Shoot"
+    ],
+    "correct": "Shoot",
+    "role": "Z"
+  },
+  {
+    "question": "Bone, Y, Orlando \u2014 what does RB do?",
+    "options": [
+      "Hitch to Whip",
+      "Snag",
+      "Outside zone",
+      "Shoot"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Bone, Pacers \u2014 what does X do?",
+    "options": [
+      "Dig",
+      "Flag",
+      "Cross",
+      "Shoot"
+    ],
+    "correct": "Shoot",
+    "role": "X"
+  },
+  {
+    "question": "Bone, Pacers \u2014 what does H do?",
+    "options": [
+      "Glande",
+      "Jet to Flat",
+      "Drarg",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Bone, Pacers \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Shoot",
+      "Lead Block",
+      "Swing"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Bone, Pacers \u2014 what does Z do?",
+    "options": [
+      "Jet motion",
+      "Block",
+      "C gap run",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Bone, Pacers \u2014 what does RB do?",
+    "options": [
+      "Jet Shoot",
+      "Hitch to Whip",
+      "Hitch",
+      "Inside zone"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does X do?",
+    "options": [
+      "Seam",
+      "Hitch",
+      "Shoot",
+      "Deep out"
+    ],
+    "correct": "Shoot",
+    "role": "X"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Jet Shoot",
+      "Check Swing",
+      "Corner"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Drag",
+      "Glance",
+      "Trap Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Seam",
+      "Grass Post",
+      "Snag"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does RB do?",
+    "options": [
+      "Fade",
+      "Outside zone",
+      "C gap run",
+      "Seam"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Bone, H, Baltimore \u2014 what does X do?",
+    "options": [
+      "Dig",
+      "Check Swing",
+      "Bubble",
+      "Jet Shoot"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Bone, H, Baltimore \u2014 what does H do?",
+    "options": [
+      "Rail",
+      "Hith to Whip",
+      "Shoot",
+      "Counter"
+    ],
+    "correct": "Shoot",
+    "role": "H"
+  },
+  {
+    "question": "Bone, H, Baltimore \u2014 what does Y do?",
+    "options": [
+      "Jet sweep",
+      "Freeze",
+      "Glance",
+      "Deep out"
+    ],
+    "correct": "Deep out",
+    "role": "Y"
+  },
+  {
+    "question": "Bone, H, Baltimore \u2014 what does Z do?",
+    "options": [
+      "Jet sweep",
+      "Fade",
+      "Check Swing",
+      "Deep out"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Bone, H, Baltimore \u2014 what does RB do?",
+    "options": [
+      "Check Swing",
+      "Jet Block",
+      "Play Action ",
+      "Drag"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Hitch/Fade",
+      "Cross",
+      "Sluggo"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does H do?",
+    "options": [
+      "Bubble",
+      "Drarg",
+      "Hitch to Whip",
+      "Rail"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Play Action ",
+      "Seam",
+      "Cross"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Hith to Whip",
+      "Cross",
+      "Glande"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does RB do?",
+    "options": [
+      "Glande",
+      "Outside zone",
+      "Hitch",
+      "Freeze"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Nets \u2014 what does X do?",
+    "options": [
+      "Hitch",
+      "Trap Block",
+      "Glance",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Nets \u2014 what does H do?",
+    "options": [
+      "Hitch",
+      "Post",
+      "Bubble",
+      "Slant"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Nets \u2014 what does Y do?",
+    "options": [
+      "Counter",
+      "Slant",
+      "Freeze",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Nets \u2014 what does Z do?",
+    "options": [
+      "Check Swing",
+      "Block",
+      "Drarg",
+      "Hitch to Whip"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Nets \u2014 what does RB do?",
+    "options": [
+      "Lead Block",
+      "Corner",
+      "C gap run",
+      "Screen"
+    ],
+    "correct": "C gap run",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does X do?",
+    "options": [
+      "Rail",
+      "Block",
+      "Hitch to Whip",
+      "Deep out"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does H do?",
+    "options": [
+      "Bubble",
+      "Jet motion",
+      "Corner",
+      "BLock"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does Y do?",
+    "options": [
+      "Counter",
+      "Fade",
+      "Block",
+      "Drarg"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does Z do?",
+    "options": [
+      "Jet Block",
+      "Seam",
+      "Block",
+      "Screen"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does RB do?",
+    "options": [
+      "Shoot",
+      "Inside zone",
+      "Counter",
+      "Fade"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Chicago \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Sluggo",
+      "Drarg",
+      "Hitch"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Chicago \u2014 what does H do?",
+    "options": [
+      "Deep out",
+      "Jet Block",
+      "Block",
+      "Freeze"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Chicago \u2014 what does Y do?",
+    "options": [
+      "Bubble",
+      "Jet Shoot",
+      "Trap Block",
+      "Drarg"
+    ],
+    "correct": "Bubble",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Chicago \u2014 what does Z do?",
+    "options": [
+      "Slant",
+      "Block",
+      "Screen",
+      "Glande"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Chicago \u2014 what does RB do?",
+    "options": [
+      "Sluggo",
+      "Seam",
+      "Glance",
+      "Counter"
+    ],
+    "correct": "Counter",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does X do?",
+    "options": [
+      "Dig",
+      "Jet to Flat",
+      "Outside zone",
+      "Jet sweep"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does H do?",
+    "options": [
+      "Hith to Whip",
+      "Jet Shoot",
+      "Counter",
+      "Post"
+    ],
+    "correct": "Post",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does Y do?",
+    "options": [
+      "Shoot",
+      "Slant",
+      "Hitch to Whip",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does Z do?",
+    "options": [
+      "Corner",
+      "Screen",
+      "Post",
+      "Bubble"
+    ],
+    "correct": "Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Left, Yankees \u2014 what does RB do?",
+    "options": [
+      "Drag",
+      "Glance",
+      "Play Action ",
+      "Jet to Flat"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does X do?",
+    "options": [
+      "Sluggo",
+      "Fade",
+      "Snag",
+      "Shoot"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Hitch",
+      "Lead Block",
+      "Block"
+    ],
+    "correct": "Drarg",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does Y do?",
+    "options": [
+      "Cross",
+      "Grass Post",
+      "Jet Shoot",
+      "Hitch/Fade"
+    ],
+    "correct": "Cross",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does Z do?",
+    "options": [
+      "BLock",
+      "Fade",
+      "Post",
+      "Grass Post"
+    ],
+    "correct": "Grass Post",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, St Louis \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Dig",
+      "Corner",
+      "Deep out"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Play Action ",
+      "Jet Shoot",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does H do?",
+    "options": [
+      "Wheel",
+      "Hitch/Fade",
+      "Corner",
+      "Bubble"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does Y do?",
+    "options": [
+      "Jet to Flat",
+      "Jet Block",
+      "Glance",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does Z do?",
+    "options": [
+      "Snag",
+      "Block",
+      "Play Action ",
+      "Inside zone"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does RB do?",
+    "options": [
+      "Wheel",
+      "Glande",
+      "Play Action ",
+      "Outside zone"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Pacers \u2014 what does X do?",
+    "options": [
+      "Play Action ",
+      "Counter",
+      "Sluggo",
+      "Hitch/Fade"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Pacers \u2014 what does H do?",
+    "options": [
+      "Jet motion",
+      "Flag",
+      "Seam",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Pacers \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Fade",
+      "Deep out",
+      "Dig"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Pacers \u2014 what does Z do?",
+    "options": [
+      "Inside zone",
+      "Block",
+      "Hitch to Whip",
+      "Flag"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Pacers \u2014 what does RB do?",
+    "options": [
+      "Inside zone",
+      "Jet motion",
+      "C gap run",
+      "Swing"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trey  Right, Baltimore \u2014 what does X do?",
+    "options": [
+      "Dig",
+      "Hitch to Whip",
+      "Glande",
+      "Deep out"
+    ],
+    "correct": "Dig",
+    "role": "X"
+  },
+  {
+    "question": "Trey  Right, Baltimore \u2014 what does H do?",
+    "options": [
+      "Flag",
+      "Hitch/Fade",
+      "Deep out",
+      "Corner"
+    ],
+    "correct": "Deep out",
+    "role": "H"
+  },
+  {
+    "question": "Trey  Right, Baltimore \u2014 what does Y do?",
+    "options": [
+      "Freeze",
+      "Hitch/Fade",
+      "Shoot",
+      "Drarg"
+    ],
+    "correct": "Shoot",
+    "role": "Y"
+  },
+  {
+    "question": "Trey  Right, Baltimore \u2014 what does Z do?",
+    "options": [
+      "Counter",
+      "Jet sweep",
+      "Hitch/Fade",
+      "Fade"
+    ],
+    "correct": "Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Trey  Right, Baltimore \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Freeze",
+      "Flag",
+      "Slant"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does X do?",
+    "options": [
+      "Jet to Flat",
+      "Swing",
+      "Fade",
+      "C gap run"
+    ],
+    "correct": "Fade",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does H do?",
+    "options": [
+      "BLock",
+      "Counter",
+      "Slant",
+      "Screen"
+    ],
+    "correct": "Slant",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does Y do?",
+    "options": [
+      "Check Swing",
+      "Hitch",
+      "Wheel",
+      "Lead Block"
+    ],
+    "correct": "Hitch",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does Z do?",
+    "options": [
+      "Fade",
+      "Hitch to Whip",
+      "Seam",
+      "Glance"
+    ],
+    "correct": "Glance",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Y, Pittsburgh \u2014 what does RB do?",
+    "options": [
+      "Block",
+      "Deep out",
+      "Inside zone",
+      "Shoot"
+    ],
+    "correct": "Shoot",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does X do?",
+    "options": [
+      "Dig",
+      "Trap Block",
+      "Wheel",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does H do?",
+    "options": [
+      "Sluggo",
+      "Grass Post",
+      "Screen",
+      "Lead Block"
+    ],
+    "correct": "Screen",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does Y do?",
+    "options": [
+      "Swing",
+      "Glance",
+      "Sluggo",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does Z do?",
+    "options": [
+      "Jet Block",
+      "Block",
+      "Deep out",
+      "Outside zone"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, Colorado  \u2014 what does RB do?",
+    "options": [
+      "Play Action ",
+      "Hitch to Whip",
+      "Hith to Whip",
+      "Hitch/Fade"
+    ],
+    "correct": "Play Action ",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Orlando \u2014 what does X do?",
+    "options": [
+      "Jet sweep",
+      "Block",
+      "Flag",
+      "Outside zone"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Orlando \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Wheel",
+      "Glance",
+      "C gap run"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Orlando \u2014 what does Y do?",
+    "options": [
+      "Rail",
+      "Fade",
+      "C gap run",
+      "Bubble"
+    ],
+    "correct": "Bubble",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Orlando \u2014 what does Z do?",
+    "options": [
+      "Cross",
+      "Sluggo",
+      "Block",
+      "Glande"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Orlando \u2014 what does RB do?",
+    "options": [
+      "Shoot",
+      "Outside zone",
+      "Grass Post",
+      "Check Swing"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does X do?",
+    "options": [
+      "Hitch/Fade",
+      "Slant",
+      "Block",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does H do?",
+    "options": [
+      "Hitch",
+      "Shoot",
+      "Sluggo",
+      "Bubble"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does Y do?",
+    "options": [
+      "Deep out",
+      "Swing",
+      "Block",
+      "Check Swing"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Dig",
+      "Fade",
+      "Shoot"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does RB do?",
+    "options": [
+      "Outside zone",
+      "Flag",
+      "Glande",
+      "Hitch/Fade"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does X do?",
+    "options": [
+      "Swing",
+      "Block",
+      "Rail",
+      "Wheel"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does H do?",
+    "options": [
+      "Hith to Whip",
+      "Inside zone",
+      "Bubble",
+      "Shoot"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does Y do?",
+    "options": [
+      "Jet sweep",
+      "Block",
+      "Screen",
+      "Grass Post"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does Z do?",
+    "options": [
+      "Corner",
+      "Block",
+      "Hith to Whip",
+      "Glande"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Y, Orlando \u2014 what does RB do?",
+    "options": [
+      "Outside zone",
+      "Inside zone",
+      "Cross",
+      "Glande"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Nets, Smoke \u2014 what does X do?",
+    "options": [
+      "Seam",
+      "Grass Post",
+      "Outside zone",
+      "Screen"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Nets, Smoke \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Slant",
+      "Flag",
+      "Lead Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Nets, Smoke \u2014 what does Y do?",
+    "options": [
+      "Post",
+      "BLock",
+      "Block",
+      "Seam"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Nets, Smoke \u2014 what does Z do?",
+    "options": [
+      "Lead Block",
+      "Screen",
+      "Jet sweep",
+      "Grass Post"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Nets, Smoke \u2014 what does RB do?",
+    "options": [
+      "Corner",
+      "Jet sweep",
+      "C gap run",
+      "Check Swing"
+    ],
+    "correct": "C gap run",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does X do?",
+    "options": [
+      "Drag",
+      "Shoot",
+      "Inside zone",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does H do?",
+    "options": [
+      "Fade",
+      "Lead Block",
+      "Bubble",
+      "Counter"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does Y do?",
+    "options": [
+      "Corner",
+      "Hith to Whip",
+      "Block",
+      "Jet Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Trap Block",
+      "Hitch to Whip",
+      "Screen"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Pacers \u2014 what does RB do?",
+    "options": [
+      "Fade",
+      "Inside zone",
+      "Jet sweep",
+      "Slant"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Right, Indiana \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Play Action ",
+      "Jet sweep",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trey Right, Indiana \u2014 what does H do?",
+    "options": [
+      "Hitch",
+      "Slant",
+      "Dig",
+      "Bubble"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Trey Right, Indiana \u2014 what does Y do?",
+    "options": [
+      "Block",
+      "Hitch",
+      "Hith to Whip",
+      "Swing"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Right, Indiana \u2014 what does Z do?",
+    "options": [
+      "Post",
+      "Hitch",
+      "BLock",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Right, Indiana \u2014 what does RB do?",
+    "options": [
+      "Jet to Flat",
+      "Swing",
+      "Glance",
+      "Inside zone"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Chicago, Smoke \u2014 what does X do?",
+    "options": [
+      "Glande",
+      "Screen",
+      "Lead Block",
+      "Dig"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Chicago, Smoke \u2014 what does H do?",
+    "options": [
+      "Jet Block",
+      "Lead Block",
+      "Drarg",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Chicago, Smoke \u2014 what does Y do?",
+    "options": [
+      "Drarg",
+      "Block",
+      "Wheel",
+      "C gap run"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Chicago, Smoke \u2014 what does Z do?",
+    "options": [
+      "Jet to Flat",
+      "BLock",
+      "Screen",
+      "Flag"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Chicago, Smoke \u2014 what does RB do?",
+    "options": [
+      "Drarg",
+      "Dig",
+      "Counter",
+      "Block"
+    ],
+    "correct": "Counter",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Bulls \u2014 what does X do?",
+    "options": [
+      "Jet Shoot",
+      "Swing",
+      "Block",
+      "Check Swing"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Bulls \u2014 what does H do?",
+    "options": [
+      "Bubble",
+      "BLock",
+      "Fade",
+      "Hitch to Whip"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Bulls \u2014 what does Y do?",
+    "options": [
+      "Freeze",
+      "Block",
+      "Hitch to Whip",
+      "Hitch"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Bulls \u2014 what does Z do?",
+    "options": [
+      "Block",
+      "Jet motion",
+      "Flag",
+      "Cross"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Bulls \u2014 what does RB do?",
+    "options": [
+      "Freeze",
+      "Counter",
+      "Dig",
+      "Rail"
+    ],
+    "correct": "Counter",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Y, Orlando \u2014 what does X do?",
+    "options": [
+      "Lead Block",
+      "Block",
+      "Dig",
+      "Shoot"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Y, Orlando \u2014 what does H do?",
+    "options": [
+      "Hitch/Fade",
+      "Shoot",
+      "Rail",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Y, Orlando \u2014 what does Y do?",
+    "options": [
+      "Dig",
+      "Counter",
+      "Fade",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Y, Orlando \u2014 what does Z do?",
+    "options": [
+      "Shoot",
+      "Glance",
+      "Hitch/Fade",
+      "Cross"
+    ],
+    "correct": "Hitch/Fade",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Y, Orlando \u2014 what does RB do?",
+    "options": [
+      "Swing",
+      "Snag",
+      "Outside zone",
+      "Hitch"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does X do?",
+    "options": [
+      "Glande",
+      "Hith to Whip",
+      "Glance",
+      "Shoot"
+    ],
+    "correct": "Shoot",
+    "role": "X"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does H do?",
+    "options": [
+      "Block",
+      "Flag",
+      "Wheel",
+      "Counter"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does Y do?",
+    "options": [
+      "Lead Block",
+      "Slant",
+      "Block",
+      "Drag"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does Z do?",
+    "options": [
+      "Bubble",
+      "Trap Block",
+      "Sluggo",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Bone, H, Magic \u2014 what does RB do?",
+    "options": [
+      "Outside zone",
+      "Fade",
+      "Jet Shoot",
+      "Wheel"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Trey Left, Pacers \u2014 what does X do?",
+    "options": [
+      "Jet Shoot",
+      "Block",
+      "Rail",
+      "Jet to Flat"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Trey Left, Pacers \u2014 what does H do?",
+    "options": [
+      "Hitch to Whip",
+      "Cross",
+      "BLock",
+      "Bubble"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Trey Left, Pacers \u2014 what does Y do?",
+    "options": [
+      "Inside zone",
+      "Play Action ",
+      "Block",
+      "Bubble"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Trey Left, Pacers \u2014 what does Z do?",
+    "options": [
+      "Sluggo",
+      "Jet Block",
+      "Hith to Whip",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Trey Left, Pacers \u2014 what does RB do?",
+    "options": [
+      "Inside zone",
+      "Seam",
+      "Play Action ",
+      "Corner"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Y, Bulls \u2014 what does X do?",
+    "options": [
+      "Seam",
+      "Corner",
+      "Block",
+      "Flag"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Y, Bulls \u2014 what does H do?",
+    "options": [
+      "Drarg",
+      "Bubble",
+      "Flag",
+      "Block"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Y, Bulls \u2014 what does Y do?",
+    "options": [
+      "Counter",
+      "Cross",
+      "Block",
+      "Deep out"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Y, Bulls \u2014 what does Z do?",
+    "options": [
+      "Cross",
+      "Freeze",
+      "Block",
+      "Check Swing"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Y, Bulls \u2014 what does RB do?",
+    "options": [
+      "Jet Block",
+      "Counter",
+      "Check Swing",
+      "Screen"
+    ],
+    "correct": "Counter",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Nets, Smoke \u2014 what does X do?",
+    "options": [
+      "Jet to Flat",
+      "Block",
+      "Screen",
+      "Lead Block"
+    ],
+    "correct": "Screen",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Nets, Smoke \u2014 what does H do?",
+    "options": [
+      "Jet Shoot",
+      "Play Action ",
+      "Trap Block",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Nets, Smoke \u2014 what does Y do?",
+    "options": [
+      "Slant",
+      "Block",
+      "Screen",
+      "Swing"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Nets, Smoke \u2014 what does Z do?",
+    "options": [
+      "Deep out",
+      "Screen",
+      "Grass Post",
+      "C gap run"
+    ],
+    "correct": "Screen",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Nets, Smoke \u2014 what does RB do?",
+    "options": [
+      "Hitch/Fade",
+      "BLock",
+      "C gap run",
+      "Jet to Flat"
+    ],
+    "correct": "C gap run",
+    "role": "RB"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does X do?",
+    "options": [
+      "Block",
+      "Dig",
+      "Jet sweep",
+      "Inside zone"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does H do?",
+    "options": [
+      "Hitch/Fade",
+      "Block",
+      "Outside zone",
+      "Jet motion"
+    ],
+    "correct": "Block",
+    "role": "H"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does Y do?",
+    "options": [
+      "Check Swing",
+      "Block",
+      "Bubble",
+      "Glande"
+    ],
+    "correct": "Bubble",
+    "role": "Y"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does Z do?",
+    "options": [
+      "BLock",
+      "Dig",
+      "Lead Block",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Spread, Indiana \u2014 what does RB do?",
+    "options": [
+      "Swing",
+      "Outside zone",
+      "Drag",
+      "Inside zone"
+    ],
+    "correct": "Inside zone",
+    "role": "RB"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does X do?",
+    "options": [
+      "Drarg",
+      "Block",
+      "Fade",
+      "Check Swing"
+    ],
+    "correct": "Block",
+    "role": "X"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does H do?",
+    "options": [
+      "Bubble",
+      "Inside zone",
+      "Jet to Flat",
+      "Jet Block"
+    ],
+    "correct": "Bubble",
+    "role": "H"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does Y do?",
+    "options": [
+      "Shoot",
+      "Block",
+      "Hith to Whip",
+      "Corner"
+    ],
+    "correct": "Block",
+    "role": "Y"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does Z do?",
+    "options": [
+      "Corner",
+      "Jet Block",
+      "Hith to Whip",
+      "Block"
+    ],
+    "correct": "Block",
+    "role": "Z"
+  },
+  {
+    "question": "Deuce Right, Magic \u2014 what does RB do?",
+    "options": [
+      "BLock",
+      "Outside zone",
+      "Play Action ",
+      "Check Swing"
+    ],
+    "correct": "Outside zone",
+    "role": "RB"
+  }
+];
+
+    
+const correctSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sounds/correct.wav');
+const wrongSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sounds/wrong.wav');
+
+
+    let filteredQuestions = [];
+    let current = 0;
+    let score = 0;
+    let maxScore = 0;
+    let startTime = Date.now();
+
+    function startQuiz(role) {
+      filteredQuestions = questions.filter(q => q.role === role);
+      filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5);
+      current = 0;
+      score = 0;
+      maxScore = 0;
+      document.getElementById("role-select").style.display = "none";
+      document.getElementById("quiz").style.display = "block";
+      updateTimer();
+      loadQuestion();
+    }
+
+    function updateTimer() {
+      const now = Date.now();
+      const seconds = Math.floor((now - startTime) / 1000);
+      document.getElementById("timer").innerText = "Time: " + seconds + "s";
+      requestAnimationFrame(updateTimer);
+    }
+
+    function loadQuestion() {
+      const q = filteredQuestions[current];
+      document.getElementById("question").innerText = q.question;
+      const options = document.getElementById("options");
+      options.innerHTML = "";
+      q.options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(opt, btn);
+        options.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(answer, button) {
+      const q = filteredQuestions[current];
+      const buttons = document.querySelectorAll("button");
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.innerText === q.correct) {
+          btn.classList.add("correct");
+        } else if (btn.innerText === answer) {
+          btn.classList.add("incorrect");
+        }
+      });
+
+      if (answer === q.correct) {
+        score++;
+        maxScore = Math.max(score, maxScore);
+        correctSound.play();
+      } else {
+        score = 0;
+        wrongSound.play();
+      }
+
+      document.getElementById("score").innerText = "Score: " + score;
+
+      setTimeout(() => {
+        current = (current + 1) % filteredQuestions.length;
+        loadQuestion();
+      }, answer === q.correct ? 1000 : 2000);
+    }
+
+    window.onload = () => {
+      document.getElementById("quiz").style.display = "none";
+    };
+  </script>
+</body>
+</html>
