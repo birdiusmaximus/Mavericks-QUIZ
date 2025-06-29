@@ -4,85 +4,100 @@
 <head>
   <meta charset="UTF-8">
   <title>Mavericks Offence QUIZ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
       background: #fff1f2;
       color: #7f1d1d;
       margin: 0;
+      padding: 0;
       display: flex;
+      flex-direction: column;
       align-items: center;
-      justify-content: center;
       min-height: 100vh;
+    }
+    #container {
+      width: 100%;
+      max-width: 500px;
       padding: 1rem;
     }
+    #role-select {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 2rem;
+    }
+    #role-select button {
+      font-size: 1.2rem;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 8px;
+      background: #dc2626;
+      color: white;
+    }
     #quiz {
-      background: #ffe4e6;
-      border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      padding: 2rem;
-      max-width: 600px;
-      width: 100%;
+      display: none;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 2rem;
     }
     #question {
-      font-size: 1.3rem;
-      margin-bottom: 1rem;
-    }
-    button {
-      display: block;
-      width: 100%;
-      margin: 0.4rem 0;
-      padding: 0.7rem;
-      background: #ef4444;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button.correct {
-      background-color: #4ade80 !important;
-    }
-    button.incorrect {
-      background-color: #f87171 !important;
-    }
-    #score, #timer {
-      margin-top: 1rem;
+      font-size: 1.25rem;
       font-weight: bold;
     }
-    @media (max-width: 600px) {
-      body {
-        padding: 1rem;
-      }
-      #quiz {
-        padding: 1.2rem;
-      }
+    .option {
+      background: #f87171;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      padding: 1rem;
+      font-size: 1rem;
+      text-align: center;
+      width: 100%;
+      margin: 0.3rem 0;
+    }
+    .correct { background-color: #4ade80 !important; }
+    .incorrect { background-color: #f87171 !important; }
+    #score, #timer {
+      font-weight: bold;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div id="role-select">
-    <h2>Select Your Position</h2>
-    <button onclick="startQuiz('X')">X</button>
-    <button onclick="startQuiz('H')">H</button>
-    <button onclick="startQuiz('Y')">Y</button>
-    <button onclick="startQuiz('Z')">Z</button>
-    <button onclick="startQuiz('RB')">RB</button>
+  <div id="container">
+    <div id="role-select">
+      <h2>Select Your Position</h2>
+      <button onclick="startQuiz('X')">X</button>
+      <button onclick="startQuiz('H')">H</button>
+      <button onclick="startQuiz('Y')">Y</button>
+      <button onclick="startQuiz('Z')">Z</button>
+      <button onclick="startQuiz('RB')">RB</button>
+<button onclick="startQuiz('QB')">QB</button>
+    </div>
+    <div id="quiz">
+      <div id="question">Loading...</div>
+      <div id="options"></div>
+      
+    <div id="score" style="font-size: 1.75rem; font-weight: bold; text-align: center; margin-top: 1rem;">
+      Score: 0
+    </div>
+    <div id="high-score" style="font-size: 1.25rem; text-align: center; color: #9f1239;">
+      High Score: 0
+    </div>
+    
+      
+    </div>
   </div>
-  <div id="quiz" style="display:none;">
-    <div id="question">Loading...</div>
-    <div id="options"></div>
-    <div id="score">Score: 0</div>
-    <div id="timer">Time: 0s</div>
-  </div>
+
   <script>
     let questions = [
   {
     "question": "Spread, H Pistons — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -92,10 +107,10 @@
   {
     "question": "Spread, H Pistons — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet sweep",
-      "Screen"
+      "Dig",
+      "Jet sweep"
     ],
     "correct": "Jet sweep",
     "role": "H"
@@ -104,9 +119,9 @@
     "question": "Spread, H Pistons — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -116,7 +131,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -126,9 +141,9 @@
     "question": "Spread, H Pistons — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -138,7 +153,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -148,9 +163,9 @@
     "question": "Trips Right, Y Detroit  — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -158,9 +173,9 @@
   {
     "question": "Trips Right, Y Detroit  — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Jet sweep"
     ],
     "correct": "Jet sweep",
@@ -169,8 +184,8 @@
   {
     "question": "Trips Right, Y Detroit  — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -181,9 +196,9 @@
     "question": "Trips Right, Y Detroit  — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -193,7 +208,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -203,9 +218,9 @@
     "question": "Spread, Y Insert, Indiana — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -213,9 +228,9 @@
   {
     "question": "Spread, Y Insert, Indiana — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Lead Block"
     ],
     "correct": "Lead Block",
@@ -224,8 +239,8 @@
   {
     "question": "Spread, Y Insert, Indiana — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -235,10 +250,10 @@
   {
     "question": "Spread, Y Insert, Indiana — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -248,7 +263,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -258,9 +273,9 @@
     "question": "Spread, Y Trap, Brooklyn — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -268,9 +283,9 @@
   {
     "question": "Spread, Y Trap, Brooklyn — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -279,8 +294,8 @@
   {
     "question": "Spread, Y Trap, Brooklyn — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -290,10 +305,10 @@
   {
     "question": "Spread, Y Trap, Brooklyn — what does RB do?",
     "options": [
-      "Block",
       "C gap run",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "C gap run",
     "role": "RB"
@@ -303,7 +318,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -313,9 +328,9 @@
     "question": "Trips Left, Y Jet, Chicago — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -323,9 +338,9 @@
   {
     "question": "Trips Left, Y Jet, Chicago — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Jet motion"
     ],
     "correct": "Jet motion",
@@ -334,8 +349,8 @@
   {
     "question": "Trips Left, Y Jet, Chicago — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -345,10 +360,10 @@
   {
     "question": "Trips Left, Y Jet, Chicago — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
       "Counter",
-      "Outside zone",
-      "Rail"
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Counter",
     "role": "RB"
@@ -358,7 +373,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -368,9 +383,9 @@
     "question": "Spread, H Jet, Brooklyn, Smoke — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -379,9 +394,9 @@
     "question": "Spread, H Jet, Brooklyn, Smoke — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -389,10 +404,10 @@
   {
     "question": "Spread, H Jet, Brooklyn, Smoke — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -400,10 +415,10 @@
   {
     "question": "Spread, H Jet, Brooklyn, Smoke — what does RB do?",
     "options": [
-      "Block",
       "C gap run",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "C gap run",
     "role": "RB"
@@ -411,8 +426,8 @@
   {
     "question": "Spread, H, Chargers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -422,10 +437,10 @@
   {
     "question": "Spread, H, Chargers — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Screen"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "H"
@@ -433,10 +448,10 @@
   {
     "question": "Spread, H, Chargers — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Fade",
-      "Jet motion"
+      "Dig",
+      "Fade"
     ],
     "correct": "Fade",
     "role": "Y"
@@ -444,8 +459,8 @@
   {
     "question": "Spread, H, Chargers — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -455,9 +470,9 @@
   {
     "question": "Spread, H, Chargers — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -466,8 +481,8 @@
   {
     "question": "Trips Right, H, Tennessee — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -477,10 +492,10 @@
   {
     "question": "Trips Right, H, Tennessee — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Screen"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "H"
@@ -488,9 +503,9 @@
   {
     "question": "Trips Right, H, Tennessee — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -499,8 +514,8 @@
   {
     "question": "Trips Right, H, Tennessee — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -510,10 +525,10 @@
   {
     "question": "Trips Right, H, Tennessee — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -521,8 +536,8 @@
   {
     "question": "Spread, H, Steelers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -532,9 +547,9 @@
   {
     "question": "Spread, H, Steelers — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -543,10 +558,10 @@
   {
     "question": "Spread, H, Steelers — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Jet motion"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "Y"
@@ -554,8 +569,8 @@
   {
     "question": "Spread, H, Steelers — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -565,9 +580,9 @@
   {
     "question": "Spread, H, Steelers — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -576,8 +591,8 @@
   {
     "question": "Spread, Washington — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Slant"
     ],
@@ -587,9 +602,9 @@
   {
     "question": "Spread, Washington — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -598,9 +613,9 @@
   {
     "question": "Spread, Washington — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -609,8 +624,8 @@
   {
     "question": "Spread, Washington — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -620,9 +635,9 @@
   {
     "question": "Spread, Washington — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -633,7 +648,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -643,9 +658,9 @@
     "question": "Spread, Y Trap, Indiana — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -653,9 +668,9 @@
   {
     "question": "Spread, Y Trap, Indiana — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -664,8 +679,8 @@
   {
     "question": "Spread, Y Trap, Indiana — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -675,10 +690,10 @@
   {
     "question": "Spread, Y Trap, Indiana — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -686,8 +701,8 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Post",
       "Screen"
     ],
@@ -697,9 +712,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -708,9 +723,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Post"
     ],
     "correct": "Post",
@@ -719,9 +734,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does Z do?",
     "options": [
-      "Block",
       "Cross",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Cross",
@@ -730,10 +745,10 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -741,10 +756,10 @@
   {
     "question": "Spread, Y Jet, Kansas City — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -752,9 +767,9 @@
   {
     "question": "Spread, Y Jet, Kansas City — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -763,9 +778,9 @@
   {
     "question": "Spread, Y Jet, Kansas City — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Jet to Flat"
     ],
     "correct": "Jet to Flat",
@@ -774,8 +789,8 @@
   {
     "question": "Spread, Y Jet, Kansas City — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Flag",
       "Screen"
     ],
@@ -785,10 +800,10 @@
   {
     "question": "Spread, Y Jet, Kansas City — what does RB do?",
     "options": [
-      "Block",
       "Check Swing",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Check Swing",
     "role": "RB"
@@ -796,8 +811,8 @@
   {
     "question": "Spread, LA Chargers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -807,10 +822,10 @@
   {
     "question": "Spread, LA Chargers — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Fade",
-      "Screen"
+      "Dig",
+      "Fade"
     ],
     "correct": "Fade",
     "role": "H"
@@ -818,10 +833,10 @@
   {
     "question": "Spread, LA Chargers — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Fade",
-      "Jet motion"
+      "Dig",
+      "Fade"
     ],
     "correct": "Fade",
     "role": "Y"
@@ -829,8 +844,8 @@
   {
     "question": "Spread, LA Chargers — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -840,9 +855,9 @@
   {
     "question": "Spread, LA Chargers — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -853,7 +868,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -863,9 +878,9 @@
     "question": "Spread, Y Detroit — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -873,9 +888,9 @@
   {
     "question": "Spread, Y Detroit — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Jet sweep"
     ],
     "correct": "Jet sweep",
@@ -884,8 +899,8 @@
   {
     "question": "Spread, Y Detroit — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -896,9 +911,9 @@
     "question": "Spread, Y Detroit — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -908,7 +923,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -918,9 +933,9 @@
     "question": "Spread, Y Jet, Houston — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -928,10 +943,10 @@
   {
     "question": "Spread, Y Jet, Houston — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Block",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Jet Block",
     "role": "Y"
@@ -939,8 +954,8 @@
   {
     "question": "Spread, Y Jet, Houston — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -950,9 +965,9 @@
   {
     "question": "Spread, Y Jet, Houston — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Swing"
     ],
     "correct": "Swing",
@@ -963,7 +978,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -972,10 +987,10 @@
   {
     "question": "Spread, H Jet, Indiana, Smoke — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Block",
-      "Screen"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Jet Block",
     "role": "H"
@@ -984,9 +999,9 @@
     "question": "Spread, H Jet, Indiana, Smoke — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -994,10 +1009,10 @@
   {
     "question": "Spread, H Jet, Indiana, Smoke — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -1005,10 +1020,10 @@
   {
     "question": "Spread, H Jet, Indiana, Smoke — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -1016,10 +1031,10 @@
   {
     "question": "Spread, Y Trap, Colorado — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -1028,9 +1043,9 @@
     "question": "Spread, Y Trap, Colorado — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -1038,9 +1053,9 @@
   {
     "question": "Spread, Y Trap, Colorado — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -1051,7 +1066,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1060,10 +1075,10 @@
   {
     "question": "Spread, Y Trap, Colorado — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -1073,7 +1088,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1083,9 +1098,9 @@
     "question": "Trips Left, Y Jet, Chicago — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -1093,9 +1108,9 @@
   {
     "question": "Trips Left, Y Jet, Chicago — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Jet motion"
     ],
     "correct": "Jet motion",
@@ -1104,8 +1119,8 @@
   {
     "question": "Trips Left, Y Jet, Chicago — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -1115,10 +1130,10 @@
   {
     "question": "Trips Left, Y Jet, Chicago — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
       "Counter",
-      "Outside zone",
-      "Rail"
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Counter",
     "role": "RB"
@@ -1126,8 +1141,8 @@
   {
     "question": "Spread, St Louis — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -1137,10 +1152,10 @@
   {
     "question": "Spread, St Louis — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Drag",
-      "Screen"
+      "Dig",
+      "Drag"
     ],
     "correct": "Drag",
     "role": "H"
@@ -1148,10 +1163,10 @@
   {
     "question": "Spread, St Louis — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "Y"
@@ -1159,8 +1174,8 @@
   {
     "question": "Spread, St Louis — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Grass Post",
       "Screen"
     ],
@@ -1170,10 +1185,10 @@
   {
     "question": "Spread, St Louis — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -1181,8 +1196,8 @@
   {
     "question": "Trips Right, H, Pittsburgh — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -1192,10 +1207,10 @@
   {
     "question": "Trips Right, H, Pittsburgh — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Screen"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "H"
@@ -1203,9 +1218,9 @@
   {
     "question": "Trips Right, H, Pittsburgh — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Slant"
     ],
     "correct": "Slant",
@@ -1214,8 +1229,8 @@
   {
     "question": "Trips Right, H, Pittsburgh — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -1225,9 +1240,9 @@
   {
     "question": "Trips Right, H, Pittsburgh — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -1236,10 +1251,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -1247,9 +1262,9 @@
   {
     "question": "Spread, H Jet, Baltimore — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -1258,10 +1273,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Deep out",
     "role": "Y"
@@ -1269,8 +1284,8 @@
   {
     "question": "Spread, H Jet, Baltimore — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -1280,10 +1295,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -1291,8 +1306,8 @@
   {
     "question": "Spread, H, Freeze — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -1302,10 +1317,10 @@
   {
     "question": "Spread, H, Freeze — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "H"
@@ -1313,10 +1328,10 @@
   {
     "question": "Spread, H, Freeze — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "Y"
@@ -1324,8 +1339,8 @@
   {
     "question": "Spread, H, Freeze — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -1335,10 +1350,10 @@
   {
     "question": "Spread, H, Freeze — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
+      "Counter",
       "Freeze",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Freeze",
     "role": "RB"
@@ -1348,7 +1363,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1358,9 +1373,9 @@
     "question": "Spread, Indiana — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -1368,10 +1383,10 @@
   {
     "question": "Spread, Indiana — what does Y do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Bubble",
     "role": "Y"
@@ -1381,7 +1396,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1390,10 +1405,10 @@
   {
     "question": "Spread, Indiana — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -1401,10 +1416,10 @@
   {
     "question": "Spread, Y Jet, Nets, Smoke — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -1413,9 +1428,9 @@
     "question": "Spread, Y Jet, Nets, Smoke — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -1423,10 +1438,10 @@
   {
     "question": "Spread, Y Jet, Nets, Smoke — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Block",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Jet Block",
     "role": "Y"
@@ -1436,7 +1451,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1445,10 +1460,10 @@
   {
     "question": "Spread, Y Jet, Nets, Smoke — what does RB do?",
     "options": [
-      "Block",
       "C gap run",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "C gap run",
     "role": "RB"
@@ -1456,8 +1471,8 @@
   {
     "question": "Spread, Y, LA — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -1467,10 +1482,10 @@
   {
     "question": "Spread, Y, LA — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Fade",
-      "Screen"
+      "Dig",
+      "Fade"
     ],
     "correct": "Fade",
     "role": "H"
@@ -1478,10 +1493,10 @@
   {
     "question": "Spread, Y, LA — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Jet motion"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "Y"
@@ -1489,8 +1504,8 @@
   {
     "question": "Spread, Y, LA — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -1500,9 +1515,9 @@
   {
     "question": "Spread, Y, LA — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -1511,8 +1526,8 @@
   {
     "question": "Trey Right, H, Washington — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Slant"
     ],
@@ -1522,9 +1537,9 @@
   {
     "question": "Trey Right, H, Washington — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -1533,9 +1548,9 @@
   {
     "question": "Trey Right, H, Washington — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -1544,8 +1559,8 @@
   {
     "question": "Trey Right, H, Washington — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -1555,9 +1570,9 @@
   {
     "question": "Trey Right, H, Washington — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -1568,7 +1583,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1577,10 +1592,10 @@
   {
     "question": "Spread, H Jet, Chicago, Smoke — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Block",
-      "Screen"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Jet Block",
     "role": "H"
@@ -1589,9 +1604,9 @@
     "question": "Spread, H Jet, Chicago, Smoke — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -1599,10 +1614,10 @@
   {
     "question": "Spread, H Jet, Chicago, Smoke — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -1610,10 +1625,10 @@
   {
     "question": "Spread, H Jet, Chicago, Smoke — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
       "Counter",
-      "Outside zone",
-      "Rail"
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Counter",
     "role": "RB"
@@ -1623,7 +1638,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1632,9 +1647,9 @@
   {
     "question": "Spread,  Pistons — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -1644,9 +1659,9 @@
     "question": "Spread,  Pistons — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -1656,7 +1671,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1665,10 +1680,10 @@
   {
     "question": "Spread,  Pistons — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -1676,8 +1691,8 @@
   {
     "question": "Spread, H Jet, Astros — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -1687,10 +1702,10 @@
   {
     "question": "Spread, H Jet, Astros — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Block",
-      "Screen"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Jet Block",
     "role": "H"
@@ -1699,9 +1714,9 @@
     "question": "Spread, H Jet, Astros — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -1711,7 +1726,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1720,9 +1735,9 @@
   {
     "question": "Spread, H Jet, Astros — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Swing"
     ],
     "correct": "Swing",
@@ -1733,7 +1748,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1742,9 +1757,9 @@
   {
     "question": "Spread, H Trap, Rockies — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -1754,9 +1769,9 @@
     "question": "Spread, H Trap, Rockies — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -1764,10 +1779,10 @@
   {
     "question": "Spread, H Trap, Rockies — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -1775,10 +1790,10 @@
   {
     "question": "Spread, H Trap, Rockies — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -1788,7 +1803,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1798,9 +1813,9 @@
     "question": "Spread, Detroit — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -1808,10 +1823,10 @@
   {
     "question": "Spread, Detroit — what does Y do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Bubble",
     "role": "Y"
@@ -1821,7 +1836,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1830,10 +1845,10 @@
   {
     "question": "Spread, Detroit — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -1843,7 +1858,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1853,9 +1868,9 @@
     "question": "Spread, Y Insert, Brooklyn — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -1863,9 +1878,9 @@
   {
     "question": "Spread, Y Insert, Brooklyn — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Lead Block"
     ],
     "correct": "Lead Block",
@@ -1876,7 +1891,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -1885,10 +1900,10 @@
   {
     "question": "Spread, Y Insert, Brooklyn — what does RB do?",
     "options": [
-      "Block",
       "C gap run",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "C gap run",
     "role": "RB"
@@ -1896,10 +1911,10 @@
   {
     "question": "Trey Right, MAX, Vikings  — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "X"
@@ -1907,7 +1922,7 @@
   {
     "question": "Trey Right, MAX, Vikings  — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
       "Dig",
       "Screen"
@@ -1919,9 +1934,9 @@
     "question": "Trey Right, MAX, Vikings  — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -1929,10 +1944,10 @@
   {
     "question": "Trey Right, MAX, Vikings  — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "Z"
@@ -1941,9 +1956,9 @@
     "question": "Trey Right, MAX, Vikings  — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -1951,10 +1966,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -1962,10 +1977,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Shoot",
-      "Screen"
+      "Dig",
+      "Jet Shoot"
     ],
     "correct": "Jet Shoot",
     "role": "H"
@@ -1973,10 +1988,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Deep out",
     "role": "Y"
@@ -1984,8 +1999,8 @@
   {
     "question": "Spread, H Jet, Baltimore — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -1995,10 +2010,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -2006,8 +2021,8 @@
   {
     "question": "Deuce Left, MAX, St Louis — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -2017,10 +2032,10 @@
   {
     "question": "Deuce Left, MAX, St Louis — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Screen"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "H"
@@ -2029,9 +2044,9 @@
     "question": "Deuce Left, MAX, St Louis — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -2039,8 +2054,8 @@
   {
     "question": "Deuce Left, MAX, St Louis — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Grass Post",
       "Screen"
     ],
@@ -2050,10 +2065,10 @@
   {
     "question": "Deuce Left, MAX, St Louis — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -2061,10 +2076,10 @@
   {
     "question": "Spread, MAX, Y Jet, Kansas  — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -2072,9 +2087,9 @@
   {
     "question": "Spread, MAX, Y Jet, Kansas  — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -2083,10 +2098,10 @@
   {
     "question": "Spread, MAX, Y Jet, Kansas  — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Shoot",
-      "Jet motion"
+      "Dig",
+      "Jet Shoot"
     ],
     "correct": "Jet Shoot",
     "role": "Y"
@@ -2094,8 +2109,8 @@
   {
     "question": "Spread, MAX, Y Jet, Kansas  — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Flag",
       "Screen"
     ],
@@ -2106,9 +2121,9 @@
     "question": "Spread, MAX, Y Jet, Kansas  — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -2116,8 +2131,8 @@
   {
     "question": "Trey Right, Commanders — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -2127,9 +2142,9 @@
   {
     "question": "Trey Right, Commanders — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -2138,9 +2153,9 @@
   {
     "question": "Trey Right, Commanders — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -2149,8 +2164,8 @@
   {
     "question": "Trey Right, Commanders — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Slant"
     ],
@@ -2160,9 +2175,9 @@
   {
     "question": "Trey Right, Commanders — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -2171,8 +2186,8 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Post",
       "Screen"
     ],
@@ -2182,9 +2197,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -2193,9 +2208,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Post"
     ],
     "correct": "Post",
@@ -2204,9 +2219,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does Z do?",
     "options": [
-      "Block",
       "Cross",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Cross",
@@ -2216,9 +2231,9 @@
     "question": "Trips Left, MAX, H Trap, NY — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -2226,8 +2241,8 @@
   {
     "question": "Spread, H, Freeze — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -2237,10 +2252,10 @@
   {
     "question": "Spread, H, Freeze — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "H"
@@ -2248,10 +2263,10 @@
   {
     "question": "Spread, H, Freeze — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "Y"
@@ -2259,8 +2274,8 @@
   {
     "question": "Spread, H, Freeze — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -2270,10 +2285,10 @@
   {
     "question": "Spread, H, Freeze — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
+      "Counter",
       "Freeze",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Freeze",
     "role": "RB"
@@ -2281,8 +2296,8 @@
   {
     "question": "Deuce Right, Steelers, Y Shoot — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -2292,9 +2307,9 @@
   {
     "question": "Deuce Right, Steelers, Y Shoot — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Slant"
     ],
     "correct": "Slant",
@@ -2303,9 +2318,9 @@
   {
     "question": "Deuce Right, Steelers, Y Shoot — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -2314,8 +2329,8 @@
   {
     "question": "Deuce Right, Steelers, Y Shoot — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -2325,9 +2340,9 @@
   {
     "question": "Deuce Right, Steelers, Y Shoot — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -2338,7 +2353,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -2348,9 +2363,9 @@
     "question": "Spread, Y Jet, Indiana — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -2358,10 +2373,10 @@
   {
     "question": "Spread, Y Jet, Indiana — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Block",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Jet Block",
     "role": "Y"
@@ -2369,8 +2384,8 @@
   {
     "question": "Spread, Y Jet, Indiana — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -2380,10 +2395,10 @@
   {
     "question": "Spread, Y Jet, Indiana — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -2391,10 +2406,10 @@
   {
     "question": "Deuce Right, MAX, Minnesota  — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "X"
@@ -2402,7 +2417,7 @@
   {
     "question": "Deuce Right, MAX, Minnesota  — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
       "Dig",
       "Screen"
@@ -2414,9 +2429,9 @@
     "question": "Deuce Right, MAX, Minnesota  — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -2424,10 +2439,10 @@
   {
     "question": "Deuce Right, MAX, Minnesota  — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "Z"
@@ -2436,9 +2451,9 @@
     "question": "Deuce Right, MAX, Minnesota  — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -2446,8 +2461,8 @@
   {
     "question": "Empty Right, Tennessee + Titans — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -2457,10 +2472,10 @@
   {
     "question": "Empty Right, Tennessee + Titans — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Screen"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "H"
@@ -2468,10 +2483,10 @@
   {
     "question": "Empty Right, Tennessee + Titans — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "Y"
@@ -2479,8 +2494,8 @@
   {
     "question": "Empty Right, Tennessee + Titans — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -2490,9 +2505,9 @@
   {
     "question": "Empty Right, Tennessee + Titans — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Seam"
     ],
     "correct": "Seam",
@@ -2501,8 +2516,8 @@
   {
     "question": "Trey Right, MAX, H, Washington — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Slant"
     ],
@@ -2512,9 +2527,9 @@
   {
     "question": "Trey Right, MAX, H, Washington — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -2524,9 +2539,9 @@
     "question": "Trey Right, MAX, H, Washington — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -2534,8 +2549,8 @@
   {
     "question": "Trey Right, MAX, H, Washington — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -2545,9 +2560,9 @@
   {
     "question": "Trey Right, MAX, H, Washington — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -2556,8 +2571,8 @@
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -2567,43 +2582,43 @@
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Slant"
     ],
-    "correct": "Block",
+    "correct": "Slant",
     "role": "H"
   },
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
-      "Slant"
+      "Dig"
     ],
-    "correct": "Slant",
+    "correct": "Block",
     "role": "Y"
   },
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Screen",
-      "Slant"
+      "Dig",
+      "Glance",
+      "Screen"
     ],
-    "correct": "Slant",
+    "correct": "Glance",
     "role": "Z"
   },
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -2611,8 +2626,8 @@
   {
     "question": "Deuce Left, MAX, Titans — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -2622,9 +2637,9 @@
   {
     "question": "Deuce Left, MAX, Titans — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -2634,9 +2649,9 @@
     "question": "Deuce Left, MAX, Titans — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -2644,8 +2659,8 @@
   {
     "question": "Deuce Left, MAX, Titans — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -2656,9 +2671,9 @@
     "question": "Deuce Left, MAX, Titans — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -2666,8 +2681,8 @@
   {
     "question": "Deuce Right, H Jet, St Louis — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -2677,10 +2692,10 @@
   {
     "question": "Deuce Right, H Jet, St Louis — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet Shoot",
-      "Screen"
+      "Dig",
+      "Jet Shoot"
     ],
     "correct": "Jet Shoot",
     "role": "H"
@@ -2688,10 +2703,10 @@
   {
     "question": "Deuce Right, H Jet, St Louis — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "Y"
@@ -2699,8 +2714,8 @@
   {
     "question": "Deuce Right, H Jet, St Louis — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Grass Post",
       "Screen"
     ],
@@ -2710,10 +2725,10 @@
   {
     "question": "Deuce Right, H Jet, St Louis — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -2721,10 +2736,10 @@
   {
     "question": "Deuce Right, Minnesota — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "X"
@@ -2732,7 +2747,7 @@
   {
     "question": "Deuce Right, Minnesota — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
       "Dig",
       "Screen"
@@ -2743,10 +2758,10 @@
   {
     "question": "Deuce Right, Minnesota — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hith to Whip",
-      "Jet motion"
+      "Dig",
+      "Hith to Whip"
     ],
     "correct": "Hith to Whip",
     "role": "Y"
@@ -2754,10 +2769,10 @@
   {
     "question": "Deuce Right, Minnesota — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "Z"
@@ -2765,10 +2780,10 @@
   {
     "question": "Deuce Right, Minnesota — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -2776,8 +2791,8 @@
   {
     "question": "Spread, H Insert, Pacers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -2787,10 +2802,10 @@
   {
     "question": "Spread, H Insert, Pacers — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Lead Block",
-      "Screen"
+      "Dig",
+      "Lead Block"
     ],
     "correct": "Lead Block",
     "role": "H"
@@ -2799,9 +2814,9 @@
     "question": "Spread, H Insert, Pacers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -2811,7 +2826,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -2820,10 +2835,10 @@
   {
     "question": "Spread, H Insert, Pacers — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -2831,10 +2846,10 @@
   {
     "question": "Spread, Indiana, Smoke — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -2843,9 +2858,9 @@
     "question": "Spread, Indiana, Smoke — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -2854,9 +2869,9 @@
     "question": "Spread, Indiana, Smoke — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -2864,10 +2879,10 @@
   {
     "question": "Spread, Indiana, Smoke — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -2875,10 +2890,10 @@
   {
     "question": "Spread, Indiana, Smoke — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -2886,8 +2901,8 @@
   {
     "question": " Trips Right, Pacers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -2898,9 +2913,9 @@
     "question": " Trips Right, Pacers — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -2909,9 +2924,9 @@
     "question": " Trips Right, Pacers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -2921,7 +2936,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -2930,10 +2945,10 @@
   {
     "question": " Trips Right, Pacers — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -2943,7 +2958,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -2952,9 +2967,9 @@
   {
     "question": "Trips Right, Y Detroit  — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -2963,9 +2978,9 @@
   {
     "question": "Trips Right, Y Detroit  — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Outside zone"
     ],
     "correct": "Outside zone",
@@ -2976,7 +2991,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -2986,9 +3001,9 @@
     "question": "Trips Right, Y Detroit  — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -2996,8 +3011,8 @@
   {
     "question": "Spread, H Magic — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -3008,9 +3023,9 @@
     "question": "Spread, H Magic — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -3019,9 +3034,9 @@
     "question": "Spread, H Magic — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -3031,7 +3046,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -3040,10 +3055,10 @@
   {
     "question": "Spread, H Magic — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -3051,10 +3066,10 @@
   {
     "question": "Spread, Y, Kansas City — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -3062,9 +3077,9 @@
   {
     "question": "Spread, Y, Kansas City — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -3073,9 +3088,9 @@
   {
     "question": "Spread, Y, Kansas City — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -3084,8 +3099,8 @@
   {
     "question": "Spread, Y, Kansas City — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Flag",
       "Screen"
     ],
@@ -3095,10 +3110,10 @@
   {
     "question": "Spread, Y, Kansas City — what does RB do?",
     "options": [
-      "Block",
       "Check Swing",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Check Swing",
     "role": "RB"
@@ -3106,10 +3121,10 @@
   {
     "question": "Spread, Minnesota — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "X"
@@ -3117,7 +3132,7 @@
   {
     "question": "Spread, Minnesota — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
       "Dig",
       "Screen"
@@ -3128,10 +3143,10 @@
   {
     "question": "Spread, Minnesota — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hith to Whip",
-      "Jet motion"
+      "Dig",
+      "Hith to Whip"
     ],
     "correct": "Hith to Whip",
     "role": "Y"
@@ -3139,10 +3154,10 @@
   {
     "question": "Spread, Minnesota — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "Z"
@@ -3150,10 +3165,10 @@
   {
     "question": "Spread, Minnesota — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -3161,8 +3176,8 @@
   {
     "question": "Trey Right, Titans — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -3172,10 +3187,10 @@
   {
     "question": "Trey Right, Titans — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Screen"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "H"
@@ -3183,9 +3198,9 @@
   {
     "question": "Trey Right, Titans — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -3194,8 +3209,8 @@
   {
     "question": "Trey Right, Titans — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -3205,10 +3220,10 @@
   {
     "question": "Trey Right, Titans — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -3216,8 +3231,8 @@
   {
     "question": "Trips Right, Miami — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -3227,9 +3242,9 @@
   {
     "question": "Trips Right, Miami — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -3238,10 +3253,10 @@
   {
     "question": "Trips Right, Miami — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "Y"
@@ -3249,8 +3264,8 @@
   {
     "question": "Trips Right, Miami — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -3260,10 +3275,10 @@
   {
     "question": "Trips Right, Miami — what does RB do?",
     "options": [
-      "Block",
       "Check Swing",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Check Swing",
     "role": "RB"
@@ -3271,8 +3286,8 @@
   {
     "question": "Trey Left, Orioles — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -3282,9 +3297,9 @@
   {
     "question": "Trey Left, Orioles — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Deep out",
@@ -3293,9 +3308,9 @@
   {
     "question": "Trey Left, Orioles — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -3304,10 +3319,10 @@
   {
     "question": "Trey Left, Orioles — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "Z"
@@ -3315,10 +3330,10 @@
   {
     "question": "Trey Left, Orioles — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -3326,10 +3341,10 @@
   {
     "question": "Trey Left, Colorado  — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -3338,9 +3353,9 @@
     "question": "Trey Left, Colorado  — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -3349,9 +3364,9 @@
     "question": "Trey Left, Colorado  — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -3361,7 +3376,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -3370,10 +3385,10 @@
   {
     "question": "Trey Left, Colorado  — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -3383,7 +3398,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -3393,9 +3408,9 @@
     "question": "Deuce Left, H, Houston — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -3404,9 +3419,9 @@
     "question": "Deuce Left, H, Houston — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -3414,8 +3429,8 @@
   {
     "question": "Deuce Left, H, Houston — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -3425,9 +3440,9 @@
   {
     "question": "Deuce Left, H, Houston — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Swing"
     ],
     "correct": "Swing",
@@ -3436,8 +3451,8 @@
   {
     "question": "Trips Right, H, Tennessee — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -3447,9 +3462,9 @@
   {
     "question": "Trips Right, H, Tennessee — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -3458,10 +3473,10 @@
   {
     "question": "Trips Right, H, Tennessee — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "Y"
@@ -3469,8 +3484,8 @@
   {
     "question": "Trips Right, H, Tennessee — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -3480,10 +3495,10 @@
   {
     "question": "Trips Right, H, Tennessee — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -3491,8 +3506,8 @@
   {
     "question": "Trips Left, Y, Washington — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Slant"
     ],
@@ -3502,9 +3517,9 @@
   {
     "question": "Trips Left, Y, Washington — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -3513,9 +3528,9 @@
   {
     "question": "Trips Left, Y, Washington — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -3524,8 +3539,8 @@
   {
     "question": "Trips Left, Y, Washington — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -3535,9 +3550,9 @@
   {
     "question": "Trips Left, Y, Washington — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -3546,8 +3561,8 @@
   {
     "question": "Spread, Y, LA — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -3557,10 +3572,10 @@
   {
     "question": "Spread, Y, LA — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Fade",
-      "Screen"
+      "Dig",
+      "Fade"
     ],
     "correct": "Fade",
     "role": "H"
@@ -3568,10 +3583,10 @@
   {
     "question": "Spread, Y, LA — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Jet motion"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "Y"
@@ -3579,8 +3594,8 @@
   {
     "question": "Spread, Y, LA — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -3590,9 +3605,9 @@
   {
     "question": "Spread, Y, LA — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -3601,8 +3616,8 @@
   {
     "question": "Spread, St Louis — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -3612,10 +3627,10 @@
   {
     "question": "Spread, St Louis — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Drag",
-      "Screen"
+      "Dig",
+      "Drag"
     ],
     "correct": "Drag",
     "role": "H"
@@ -3623,10 +3638,10 @@
   {
     "question": "Spread, St Louis — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "Y"
@@ -3634,8 +3649,8 @@
   {
     "question": "Spread, St Louis — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Grass Post",
       "Screen"
     ],
@@ -3645,10 +3660,10 @@
   {
     "question": "Spread, St Louis — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -3656,10 +3671,10 @@
   {
     "question": "Deuce Left, Yankees — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -3667,10 +3682,10 @@
   {
     "question": "Deuce Left, Yankees — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Post",
-      "Screen"
+      "Dig",
+      "Post"
     ],
     "correct": "Post",
     "role": "H"
@@ -3679,9 +3694,9 @@
     "question": "Deuce Left, Yankees — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -3689,8 +3704,8 @@
   {
     "question": "Deuce Left, Yankees — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Post",
       "Screen"
     ],
@@ -3700,10 +3715,10 @@
   {
     "question": "Deuce Left, Yankees — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -3713,7 +3728,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -3723,9 +3738,9 @@
     "question": "Deuce Right, Y, Houston — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -3734,9 +3749,9 @@
     "question": "Deuce Right, Y, Houston — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -3744,8 +3759,8 @@
   {
     "question": "Deuce Right, Y, Houston — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -3755,9 +3770,9 @@
   {
     "question": "Deuce Right, Y, Houston — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Swing"
     ],
     "correct": "Swing",
@@ -3766,8 +3781,8 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -3777,10 +3792,10 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Screen"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "H"
@@ -3788,9 +3803,9 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Slant"
     ],
     "correct": "Slant",
@@ -3799,8 +3814,8 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -3810,9 +3825,9 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -3821,10 +3836,10 @@
   {
     "question": "Deuce Right, Y, Colorado  — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -3833,9 +3848,9 @@
     "question": "Deuce Right, Y, Colorado  — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -3844,9 +3859,9 @@
     "question": "Deuce Right, Y, Colorado  — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -3856,7 +3871,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -3865,10 +3880,10 @@
   {
     "question": "Deuce Right, Y, Colorado  — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -3876,8 +3891,8 @@
   {
     "question": "Trips Right, H, LA — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -3887,10 +3902,10 @@
   {
     "question": "Trips Right, H, LA — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Fade",
-      "Screen"
+      "Dig",
+      "Fade"
     ],
     "correct": "Fade",
     "role": "H"
@@ -3898,10 +3913,10 @@
   {
     "question": "Trips Right, H, LA — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Drag",
-      "Jet motion"
+      "Dig",
+      "Drag"
     ],
     "correct": "Drag",
     "role": "Y"
@@ -3909,8 +3924,8 @@
   {
     "question": "Trips Right, H, LA — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -3920,9 +3935,9 @@
   {
     "question": "Trips Right, H, LA — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -3931,8 +3946,8 @@
   {
     "question": "Deuce Right, H, Titans — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -3942,10 +3957,10 @@
   {
     "question": "Deuce Right, H, Titans — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Screen"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "H"
@@ -3953,9 +3968,9 @@
   {
     "question": "Deuce Right, H, Titans — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -3964,8 +3979,8 @@
   {
     "question": "Deuce Right, H, Titans — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -3975,10 +3990,10 @@
   {
     "question": "Deuce Right, H, Titans — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -3986,8 +4001,8 @@
   {
     "question": "Trips Right, Commanders TWIST — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -3997,9 +4012,9 @@
   {
     "question": "Trips Right, Commanders TWIST — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4008,9 +4023,9 @@
   {
     "question": "Trips Right, Commanders TWIST — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -4019,8 +4034,8 @@
   {
     "question": "Trips Right, Commanders TWIST — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Sluggo"
     ],
@@ -4030,9 +4045,9 @@
   {
     "question": "Trips Right, Commanders TWIST — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -4041,8 +4056,8 @@
   {
     "question": "Trips Left, Pittsburgh — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -4052,10 +4067,10 @@
   {
     "question": "Trips Left, Pittsburgh — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Screen"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "H"
@@ -4063,9 +4078,9 @@
   {
     "question": "Trips Left, Pittsburgh — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -4074,8 +4089,8 @@
   {
     "question": "Trips Left, Pittsburgh — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -4085,9 +4100,9 @@
   {
     "question": "Trips Left, Pittsburgh — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -4096,10 +4111,10 @@
   {
     "question": "Spread, Y, Kansas — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -4107,9 +4122,9 @@
   {
     "question": "Spread, Y, Kansas — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4118,9 +4133,9 @@
   {
     "question": "Spread, Y, Kansas — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -4129,8 +4144,8 @@
   {
     "question": "Spread, Y, Kansas — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Flag",
       "Screen"
     ],
@@ -4140,10 +4155,10 @@
   {
     "question": "Spread, Y, Kansas — what does RB do?",
     "options": [
-      "Block",
       "Check Swing",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Check Swing",
     "role": "RB"
@@ -4151,10 +4166,10 @@
   {
     "question": "Spread, Minnesota — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "X"
@@ -4162,7 +4177,7 @@
   {
     "question": "Spread, Minnesota — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
       "Dig",
       "Screen"
@@ -4173,10 +4188,10 @@
   {
     "question": "Spread, Minnesota — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hith to Whip",
-      "Jet motion"
+      "Dig",
+      "Hith to Whip"
     ],
     "correct": "Hith to Whip",
     "role": "Y"
@@ -4184,10 +4199,10 @@
   {
     "question": "Spread, Minnesota — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "Z"
@@ -4195,10 +4210,10 @@
   {
     "question": "Spread, Minnesota — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -4206,10 +4221,10 @@
   {
     "question": "Trey Right, Baltimore — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -4217,9 +4232,9 @@
   {
     "question": "Trey Right, Baltimore — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Deep out",
@@ -4228,9 +4243,9 @@
   {
     "question": "Trey Right, Baltimore — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -4239,8 +4254,8 @@
   {
     "question": "Trey Right, Baltimore — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -4250,10 +4265,10 @@
   {
     "question": "Trey Right, Baltimore — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -4261,8 +4276,8 @@
   {
     "question": "Spread, MAX, Pittsburgh — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -4272,10 +4287,10 @@
   {
     "question": "Spread, MAX, Pittsburgh — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Screen"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "H"
@@ -4283,9 +4298,9 @@
   {
     "question": "Spread, MAX, Pittsburgh — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Slant"
     ],
     "correct": "Slant",
@@ -4294,8 +4309,8 @@
   {
     "question": "Spread, MAX, Pittsburgh — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -4306,9 +4321,9 @@
     "question": "Spread, MAX, Pittsburgh — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -4316,8 +4331,8 @@
   {
     "question": "Trey Left, MAX, H, Chargers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -4327,10 +4342,10 @@
   {
     "question": "Trey Left, MAX, H, Chargers — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Fade",
-      "Screen"
+      "Dig",
+      "Fade"
     ],
     "correct": "Fade",
     "role": "H"
@@ -4339,9 +4354,9 @@
     "question": "Trey Left, MAX, H, Chargers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -4349,8 +4364,8 @@
   {
     "question": "Trey Left, MAX, H, Chargers — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -4360,9 +4375,9 @@
   {
     "question": "Trey Left, MAX, H, Chargers — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -4371,8 +4386,8 @@
   {
     "question": "Trips Right, H, Washington TWIST — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Sluggo"
     ],
@@ -4382,9 +4397,9 @@
   {
     "question": "Trips Right, H, Washington TWIST — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -4393,9 +4408,9 @@
   {
     "question": "Trips Right, H, Washington TWIST — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4404,8 +4419,8 @@
   {
     "question": "Trips Right, H, Washington TWIST — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -4415,9 +4430,9 @@
   {
     "question": "Trips Right, H, Washington TWIST — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -4426,8 +4441,8 @@
   {
     "question": "Trips Left, H, Tennessee — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -4437,9 +4452,9 @@
   {
     "question": "Trips Left, H, Tennessee — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4448,10 +4463,10 @@
   {
     "question": "Trips Left, H, Tennessee — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "Y"
@@ -4459,8 +4474,8 @@
   {
     "question": "Trips Left, H, Tennessee — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -4470,10 +4485,10 @@
   {
     "question": "Trips Left, H, Tennessee — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -4481,10 +4496,10 @@
   {
     "question": "Deuce Right, MAX, Kasas City — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -4492,9 +4507,9 @@
   {
     "question": "Deuce Right, MAX, Kasas City — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4504,9 +4519,9 @@
     "question": "Deuce Right, MAX, Kasas City — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -4514,8 +4529,8 @@
   {
     "question": "Deuce Right, MAX, Kasas City — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Flag",
       "Screen"
     ],
@@ -4526,9 +4541,9 @@
     "question": "Deuce Right, MAX, Kasas City — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -4536,8 +4551,8 @@
   {
     "question": "Trips Right, H, Miami — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -4547,9 +4562,9 @@
   {
     "question": "Trips Right, H, Miami — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4558,9 +4573,9 @@
   {
     "question": "Trips Right, H, Miami — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4569,8 +4584,8 @@
   {
     "question": "Trips Right, H, Miami — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -4580,10 +4595,10 @@
   {
     "question": "Trips Right, H, Miami — what does RB do?",
     "options": [
-      "Block",
       "Check Swing",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Check Swing",
     "role": "RB"
@@ -4591,10 +4606,10 @@
   {
     "question": "Deuce Left, MAX, Yankees — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -4602,10 +4617,10 @@
   {
     "question": "Deuce Left, MAX, Yankees — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Post",
-      "Screen"
+      "Dig",
+      "Post"
     ],
     "correct": "Post",
     "role": "H"
@@ -4614,9 +4629,9 @@
     "question": "Deuce Left, MAX, Yankees — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -4624,8 +4639,8 @@
   {
     "question": "Deuce Left, MAX, Yankees — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Post",
       "Screen"
     ],
@@ -4635,10 +4650,10 @@
   {
     "question": "Deuce Left, MAX, Yankees — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -4648,7 +4663,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -4658,9 +4673,9 @@
     "question": "Deuce Left, H, Houston — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -4669,9 +4684,9 @@
     "question": "Deuce Left, H, Houston — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -4679,8 +4694,8 @@
   {
     "question": "Deuce Left, H, Houston — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -4690,9 +4705,9 @@
   {
     "question": "Deuce Left, H, Houston — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Swing"
     ],
     "correct": "Swing",
@@ -4701,8 +4716,8 @@
   {
     "question": "Trey Right, MAX, H, Washington — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Slant"
     ],
@@ -4712,9 +4727,9 @@
   {
     "question": "Trey Right, MAX, H, Washington — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -4724,9 +4739,9 @@
     "question": "Trey Right, MAX, H, Washington — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -4734,8 +4749,8 @@
   {
     "question": "Trey Right, MAX, H, Washington — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -4746,9 +4761,9 @@
     "question": "Trey Right, MAX, H, Washington — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -4756,8 +4771,8 @@
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -4767,9 +4782,9 @@
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Slant"
     ],
     "correct": "Slant",
@@ -4779,9 +4794,9 @@
     "question": "Deuce Left, MAX, Pittsburgh — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -4789,21 +4804,21 @@
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Glande",
+      "Dig",
+      "Glance",
       "Screen"
     ],
-    "correct": "Glande",
+    "correct": "Glance",
     "role": "Z"
   },
   {
     "question": "Deuce Left, MAX, Pittsburgh — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -4811,8 +4826,8 @@
   {
     "question": "Trey Left, MAX, H, Tennessee — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -4822,9 +4837,9 @@
   {
     "question": "Trey Left, MAX, H, Tennessee — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4834,9 +4849,9 @@
     "question": "Trey Left, MAX, H, Tennessee — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -4844,8 +4859,8 @@
   {
     "question": "Trey Left, MAX, H, Tennessee — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -4856,9 +4871,9 @@
     "question": "Trey Left, MAX, H, Tennessee — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -4866,8 +4881,8 @@
   {
     "question": "Deuce Right, St Louis — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -4877,10 +4892,10 @@
   {
     "question": "Deuce Right, St Louis — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Drag",
-      "Screen"
+      "Dig",
+      "Drag"
     ],
     "correct": "Drag",
     "role": "H"
@@ -4888,10 +4903,10 @@
   {
     "question": "Deuce Right, St Louis — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "Y"
@@ -4899,8 +4914,8 @@
   {
     "question": "Deuce Right, St Louis — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Grass Post",
       "Screen"
     ],
@@ -4910,10 +4925,10 @@
   {
     "question": "Deuce Right, St Louis — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -4923,7 +4938,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -4933,9 +4948,9 @@
     "question": "Deuce Left, H, Houston — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -4944,9 +4959,9 @@
     "question": "Deuce Left, H, Houston — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -4954,8 +4969,8 @@
   {
     "question": "Deuce Left, H, Houston — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -4965,9 +4980,9 @@
   {
     "question": "Deuce Left, H, Houston — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Swing"
     ],
     "correct": "Swing",
@@ -4976,8 +4991,8 @@
   {
     "question": "Trips Right, H, Miami — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -4987,9 +5002,9 @@
   {
     "question": "Trips Right, H, Miami — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -4998,9 +5013,9 @@
   {
     "question": "Trips Right, H, Miami — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -5009,8 +5024,8 @@
   {
     "question": "Trips Right, H, Miami — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -5020,10 +5035,10 @@
   {
     "question": "Trips Right, H, Miami — what does RB do?",
     "options": [
-      "Block",
       "Check Swing",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Check Swing",
     "role": "RB"
@@ -5031,10 +5046,10 @@
   {
     "question": "Deuce Left, MAX, Yankees — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -5042,10 +5057,10 @@
   {
     "question": "Deuce Left, MAX, Yankees — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Post",
-      "Screen"
+      "Dig",
+      "Post"
     ],
     "correct": "Post",
     "role": "H"
@@ -5054,9 +5069,9 @@
     "question": "Deuce Left, MAX, Yankees — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -5064,8 +5079,8 @@
   {
     "question": "Deuce Left, MAX, Yankees — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Post",
       "Screen"
     ],
@@ -5076,9 +5091,9 @@
     "question": "Deuce Left, MAX, Yankees — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -5086,8 +5101,8 @@
   {
     "question": "Spread, Washington — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Slant"
     ],
@@ -5097,9 +5112,9 @@
   {
     "question": "Spread, Washington — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -5108,9 +5123,9 @@
   {
     "question": "Spread, Washington — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -5119,8 +5134,8 @@
   {
     "question": "Spread, Washington — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -5130,9 +5145,9 @@
   {
     "question": "Spread, Washington — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -5141,8 +5156,8 @@
   {
     "question": "Spread, Tennessee — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -5152,10 +5167,10 @@
   {
     "question": "Spread, Tennessee — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Screen"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "H"
@@ -5163,9 +5178,9 @@
   {
     "question": "Spread, Tennessee — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -5174,8 +5189,8 @@
   {
     "question": "Spread, Tennessee — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -5185,10 +5200,10 @@
   {
     "question": "Spread, Tennessee — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -5196,10 +5211,10 @@
   {
     "question": "Spread, Y Trap, Colorado — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -5208,9 +5223,9 @@
     "question": "Spread, Y Trap, Colorado — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -5218,9 +5233,9 @@
   {
     "question": "Spread, Y Trap, Colorado — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -5231,7 +5246,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5240,10 +5255,10 @@
   {
     "question": "Spread, Y Trap, Colorado — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -5251,10 +5266,10 @@
   {
     "question": "Spread, Vikings — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "X"
@@ -5262,10 +5277,10 @@
   {
     "question": "Spread, Vikings — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch to Whip",
-      "Screen"
+      "Dig",
+      "Hitch to Whip"
     ],
     "correct": "Hitch to Whip",
     "role": "H"
@@ -5273,10 +5288,10 @@
   {
     "question": "Spread, Vikings — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
       "Dig",
-      "Jet motion"
+      "Jet Block"
     ],
     "correct": "Dig",
     "role": "Y"
@@ -5284,10 +5299,10 @@
   {
     "question": "Spread, Vikings — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "Z"
@@ -5295,10 +5310,10 @@
   {
     "question": "Spread, Vikings — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -5306,8 +5321,8 @@
   {
     "question": "Trey Left, Orioles — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -5317,9 +5332,9 @@
   {
     "question": "Trey Left, Orioles — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Deep out",
@@ -5328,9 +5343,9 @@
   {
     "question": "Trey Left, Orioles — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -5339,10 +5354,10 @@
   {
     "question": "Trey Left, Orioles — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "Z"
@@ -5350,10 +5365,10 @@
   {
     "question": "Trey Left, Orioles — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -5361,8 +5376,8 @@
   {
     "question": "Trips Right, Steelers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -5372,9 +5387,9 @@
   {
     "question": "Trips Right, Steelers — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -5383,10 +5398,10 @@
   {
     "question": "Trips Right, Steelers — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Jet motion"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "Y"
@@ -5394,8 +5409,8 @@
   {
     "question": "Trips Right, Steelers — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -5405,9 +5420,9 @@
   {
     "question": "Trips Right, Steelers — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -5416,8 +5431,8 @@
   {
     "question": "Spread, Titans — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -5427,9 +5442,9 @@
   {
     "question": "Spread, Titans — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -5438,10 +5453,10 @@
   {
     "question": "Spread, Titans — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "Y"
@@ -5449,8 +5464,8 @@
   {
     "question": "Spread, Titans — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -5460,10 +5475,10 @@
   {
     "question": "Spread, Titans — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -5473,7 +5488,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5482,9 +5497,9 @@
   {
     "question": "Trips Right, Y Detroit  — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -5493,9 +5508,9 @@
   {
     "question": "Trips Right, Y Detroit  — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Jet sweep"
     ],
     "correct": "Jet sweep",
@@ -5506,7 +5521,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5516,9 +5531,9 @@
     "question": "Trips Right, Y Detroit  — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -5528,7 +5543,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5538,9 +5553,9 @@
     "question": "Trips Left, Indiana — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -5549,9 +5564,9 @@
     "question": "Trips Left, Indiana — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -5559,8 +5574,8 @@
   {
     "question": "Trips Left, Indiana — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -5570,10 +5585,10 @@
   {
     "question": "Trips Left, Indiana — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -5583,7 +5598,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5592,9 +5607,9 @@
   {
     "question": "Trips Right, Detroit  — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -5604,9 +5619,9 @@
     "question": "Trips Right, Detroit  — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -5616,7 +5631,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5625,10 +5640,10 @@
   {
     "question": "Trips Right, Detroit  — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -5636,8 +5651,8 @@
   {
     "question": "Trips Right, Pacers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -5648,9 +5663,9 @@
     "question": "Trips Right, Pacers — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -5659,9 +5674,9 @@
     "question": "Trips Right, Pacers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -5671,7 +5686,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5680,10 +5695,10 @@
   {
     "question": "Trips Right, Pacers — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -5693,7 +5708,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5703,9 +5718,9 @@
     "question": "Trips Left, Brooklyn — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -5714,9 +5729,9 @@
     "question": "Trips Left, Brooklyn — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -5724,8 +5739,8 @@
   {
     "question": "Trips Left, Brooklyn — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -5735,10 +5750,10 @@
   {
     "question": "Trips Left, Brooklyn — what does RB do?",
     "options": [
-      "Block",
       "C gap run",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "C gap run",
     "role": "RB"
@@ -5748,7 +5763,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5757,9 +5772,9 @@
   {
     "question": "Deuce Left, Y, Chicago — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -5769,9 +5784,9 @@
     "question": "Deuce Left, Y, Chicago — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -5781,7 +5796,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5790,10 +5805,10 @@
   {
     "question": "Deuce Left, Y, Chicago — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
       "Counter",
-      "Outside zone",
-      "Rail"
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Counter",
     "role": "RB"
@@ -5801,8 +5816,8 @@
   {
     "question": "Spread, St Louis — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -5812,10 +5827,10 @@
   {
     "question": "Spread, St Louis — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Drag",
-      "Screen"
+      "Dig",
+      "Drag"
     ],
     "correct": "Drag",
     "role": "H"
@@ -5823,10 +5838,10 @@
   {
     "question": "Spread, St Louis — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "Y"
@@ -5834,8 +5849,8 @@
   {
     "question": "Spread, St Louis — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Grass Post",
       "Screen"
     ],
@@ -5845,10 +5860,10 @@
   {
     "question": "Spread, St Louis — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -5858,7 +5873,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -5867,9 +5882,9 @@
   {
     "question": "Spread, H Trap, Rockies — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -5879,9 +5894,9 @@
     "question": "Spread, H Trap, Rockies — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -5889,10 +5904,10 @@
   {
     "question": "Spread, H Trap, Rockies — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -5900,10 +5915,10 @@
   {
     "question": "Spread, H Trap, Rockies — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -5911,8 +5926,8 @@
   {
     "question": "Deuce Left, H Jet, Tennessee — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -5922,10 +5937,10 @@
   {
     "question": "Deuce Left, H Jet, Tennessee — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Corner",
       "Deep out",
-      "Screen"
+      "Dig"
     ],
     "correct": "Corner",
     "role": "H"
@@ -5933,9 +5948,9 @@
   {
     "question": "Deuce Left, H Jet, Tennessee — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -5944,8 +5959,8 @@
   {
     "question": "Deuce Left, H Jet, Tennessee — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -5955,10 +5970,10 @@
   {
     "question": "Deuce Left, H Jet, Tennessee — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Hitch",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Hitch",
     "role": "RB"
@@ -5966,8 +5981,8 @@
   {
     "question": "Trey Left, Y, Freeze — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -5977,10 +5992,10 @@
   {
     "question": "Trey Left, Y, Freeze — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "H"
@@ -5988,10 +6003,10 @@
   {
     "question": "Trey Left, Y, Freeze — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "Y"
@@ -5999,8 +6014,8 @@
   {
     "question": "Trey Left, Y, Freeze — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -6010,10 +6025,10 @@
   {
     "question": "Trey Left, Y, Freeze — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
+      "Counter",
       "Freeze",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Freeze",
     "role": "RB"
@@ -6021,8 +6036,8 @@
   {
     "question": "Spread, H, Freeze — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -6032,10 +6047,10 @@
   {
     "question": "Spread, H, Freeze — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "H"
@@ -6043,10 +6058,10 @@
   {
     "question": "Spread, H, Freeze — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "Y"
@@ -6054,8 +6069,8 @@
   {
     "question": "Spread, H, Freeze — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -6065,10 +6080,10 @@
   {
     "question": "Spread, H, Freeze — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
+      "Counter",
       "Freeze",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Freeze",
     "role": "RB"
@@ -6076,8 +6091,8 @@
   {
     "question": "Trips Right, H, Freeze — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -6087,10 +6102,10 @@
   {
     "question": "Trips Right, H, Freeze — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "H"
@@ -6098,10 +6113,10 @@
   {
     "question": "Trips Right, H, Freeze — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Freeze"
     ],
     "correct": "Freeze",
     "role": "Y"
@@ -6109,8 +6124,8 @@
   {
     "question": "Trips Right, H, Freeze — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Freeze",
       "Screen"
     ],
@@ -6120,10 +6135,10 @@
   {
     "question": "Trips Right, H, Freeze — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
+      "Counter",
       "Freeze",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Freeze",
     "role": "RB"
@@ -6131,10 +6146,10 @@
   {
     "question": "Trey Right, MAX, Vikings  — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "X"
@@ -6142,7 +6157,7 @@
   {
     "question": "Trey Right, MAX, Vikings  — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
       "Dig",
       "Screen"
@@ -6154,9 +6169,9 @@
     "question": "Trey Right, MAX, Vikings  — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6164,10 +6179,10 @@
   {
     "question": "Trey Right, MAX, Vikings  — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Deep out",
     "role": "Z"
@@ -6176,9 +6191,9 @@
     "question": "Trey Right, MAX, Vikings  — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -6186,10 +6201,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -6197,9 +6212,9 @@
   {
     "question": "Spread, H Jet, Baltimore — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -6208,10 +6223,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Deep out",
     "role": "Y"
@@ -6219,8 +6234,8 @@
   {
     "question": "Spread, H Jet, Baltimore — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -6230,10 +6245,10 @@
   {
     "question": "Spread, H Jet, Baltimore — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -6241,8 +6256,8 @@
   {
     "question": "Deuce Left, MAX, St Louis — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -6252,10 +6267,10 @@
   {
     "question": "Deuce Left, MAX, St Louis — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Screen"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "H"
@@ -6264,9 +6279,9 @@
     "question": "Deuce Left, MAX, St Louis — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6274,8 +6289,8 @@
   {
     "question": "Deuce Left, MAX, St Louis — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Grass Post",
       "Screen"
     ],
@@ -6286,9 +6301,9 @@
     "question": "Deuce Left, MAX, St Louis — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -6296,10 +6311,10 @@
   {
     "question": "Spread, MAX, Y Jet, Kansas  — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -6307,9 +6322,9 @@
   {
     "question": "Spread, MAX, Y Jet, Kansas  — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -6318,9 +6333,9 @@
   {
     "question": "Spread, MAX, Y Jet, Kansas  — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -6329,8 +6344,8 @@
   {
     "question": "Spread, MAX, Y Jet, Kansas  — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Flag",
       "Screen"
     ],
@@ -6341,9 +6356,9 @@
     "question": "Spread, MAX, Y Jet, Kansas  — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -6351,8 +6366,8 @@
   {
     "question": "Trey Right, Commanders — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Snag"
     ],
@@ -6362,9 +6377,9 @@
   {
     "question": "Trey Right, Commanders — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Wheel"
     ],
     "correct": "Wheel",
@@ -6373,9 +6388,9 @@
   {
     "question": "Trey Right, Commanders — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -6384,8 +6399,8 @@
   {
     "question": "Trey Right, Commanders — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Slant"
     ],
@@ -6395,9 +6410,9 @@
   {
     "question": "Trey Right, Commanders — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
-      "Outside zone",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Rail"
     ],
     "correct": "Rail",
@@ -6406,8 +6421,8 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Post",
       "Screen"
     ],
@@ -6417,9 +6432,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Trap Block"
     ],
     "correct": "Trap Block",
@@ -6428,9 +6443,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Post"
     ],
     "correct": "Post",
@@ -6439,9 +6454,9 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does Z do?",
     "options": [
-      "Block",
       "Cross",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Cross",
@@ -6450,10 +6465,10 @@
   {
     "question": "Trips Left, MAX, H Trap, NY — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -6461,8 +6476,8 @@
   {
     "question": "Deuce Right, MAX, NY — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Post",
       "Screen"
     ],
@@ -6472,10 +6487,10 @@
   {
     "question": "Deuce Right, MAX, NY — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Post",
-      "Screen"
+      "Dig",
+      "Post"
     ],
     "correct": "Post",
     "role": "H"
@@ -6484,9 +6499,9 @@
     "question": "Deuce Right, MAX, NY — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6494,9 +6509,9 @@
   {
     "question": "Deuce Right, MAX, NY — what does Z do?",
     "options": [
-      "Block",
       "Cross",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Cross",
@@ -6505,10 +6520,10 @@
   {
     "question": "Deuce Right, MAX, NY — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -6516,8 +6531,8 @@
   {
     "question": "Trey Left, MAX, H, Tennessee — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch to Whip",
       "Screen"
     ],
@@ -6527,9 +6542,9 @@
   {
     "question": "Trey Left, MAX, H, Tennessee — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -6539,9 +6554,9 @@
     "question": "Trey Left, MAX, H, Tennessee — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6549,8 +6564,8 @@
   {
     "question": "Trey Left, MAX, H, Tennessee — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch",
       "Screen"
     ],
@@ -6561,9 +6576,9 @@
     "question": "Trey Left, MAX, H, Tennessee — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -6571,8 +6586,8 @@
   {
     "question": "Deuce Left, MAX, Chiefs — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Flag",
       "Screen"
     ],
@@ -6582,9 +6597,9 @@
   {
     "question": "Deuce Left, MAX, Chiefs — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -6594,9 +6609,9 @@
     "question": "Deuce Left, MAX, Chiefs — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6604,10 +6619,10 @@
   {
     "question": "Deuce Left, MAX, Chiefs — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "Z"
@@ -6616,9 +6631,9 @@
     "question": "Deuce Left, MAX, Chiefs — what does RB do?",
     "options": [
       "Block",
-      "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Block",
     "role": "RB"
@@ -6626,8 +6641,8 @@
   {
     "question": "Trips Right, H, Miami — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -6637,9 +6652,9 @@
   {
     "question": "Trips Right, H, Miami — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -6648,9 +6663,9 @@
   {
     "question": "Trips Right, H, Miami — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Seam"
     ],
     "correct": "Seam",
@@ -6659,8 +6674,8 @@
   {
     "question": "Trips Right, H, Miami — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -6670,10 +6685,10 @@
   {
     "question": "Trips Right, H, Miami — what does RB do?",
     "options": [
-      "Block",
       "Check Swing",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Check Swing",
     "role": "RB"
@@ -6683,7 +6698,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -6693,9 +6708,9 @@
     "question": "Bone, Y, Orlando — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -6704,9 +6719,9 @@
     "question": "Bone, Y, Orlando — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6714,8 +6729,8 @@
   {
     "question": "Bone, Y, Orlando — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Shoot"
     ],
@@ -6725,10 +6740,10 @@
   {
     "question": "Bone, Y, Orlando — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -6736,8 +6751,8 @@
   {
     "question": "Bone, Pacers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Shoot"
     ],
@@ -6748,9 +6763,9 @@
     "question": "Bone, Pacers — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -6759,9 +6774,9 @@
     "question": "Bone, Pacers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6771,7 +6786,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -6780,10 +6795,10 @@
   {
     "question": "Bone, Pacers — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -6791,8 +6806,8 @@
   {
     "question": "Bone, H, Magic — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Shoot"
     ],
@@ -6803,9 +6818,9 @@
     "question": "Bone, H, Magic — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -6814,9 +6829,9 @@
     "question": "Bone, H, Magic — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6826,7 +6841,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -6835,10 +6850,10 @@
   {
     "question": "Bone, H, Magic — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -6846,10 +6861,10 @@
   {
     "question": "Bone, H, Baltimore — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -6857,9 +6872,9 @@
   {
     "question": "Bone, H, Baltimore — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -6868,10 +6883,10 @@
   {
     "question": "Bone, H, Baltimore — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Deep out",
     "role": "Y"
@@ -6879,8 +6894,8 @@
   {
     "question": "Bone, H, Baltimore — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -6890,10 +6905,10 @@
   {
     "question": "Bone, H, Baltimore — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -6903,7 +6918,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -6912,9 +6927,9 @@
   {
     "question": "Deuce Right, Magic — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -6924,9 +6939,9 @@
     "question": "Deuce Right, Magic — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6936,7 +6951,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -6945,10 +6960,10 @@
   {
     "question": "Deuce Right, Magic — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -6958,7 +6973,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -6967,9 +6982,9 @@
   {
     "question": "Deuce Right, Nets — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -6979,9 +6994,9 @@
     "question": "Deuce Right, Nets — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -6991,7 +7006,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7000,10 +7015,10 @@
   {
     "question": "Deuce Right, Nets — what does RB do?",
     "options": [
-      "Block",
       "C gap run",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "C gap run",
     "role": "RB"
@@ -7013,7 +7028,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7022,9 +7037,9 @@
   {
     "question": "Deuce Right, Pacers — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -7034,9 +7049,9 @@
     "question": "Deuce Right, Pacers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7046,7 +7061,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7055,10 +7070,10 @@
   {
     "question": "Deuce Right, Pacers — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -7068,7 +7083,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7078,9 +7093,9 @@
     "question": "Deuce Right, Chicago — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -7088,10 +7103,10 @@
   {
     "question": "Deuce Right, Chicago — what does Y do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Bubble",
     "role": "Y"
@@ -7101,7 +7116,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7110,10 +7125,10 @@
   {
     "question": "Deuce Right, Chicago — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
       "Counter",
-      "Outside zone",
-      "Rail"
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Counter",
     "role": "RB"
@@ -7121,10 +7136,10 @@
   {
     "question": "Deuce Left, Yankees — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -7132,10 +7147,10 @@
   {
     "question": "Deuce Left, Yankees — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Post",
-      "Screen"
+      "Dig",
+      "Post"
     ],
     "correct": "Post",
     "role": "H"
@@ -7144,9 +7159,9 @@
     "question": "Deuce Left, Yankees — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7154,8 +7169,8 @@
   {
     "question": "Deuce Left, Yankees — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Post",
       "Screen"
     ],
@@ -7165,10 +7180,10 @@
   {
     "question": "Deuce Left, Yankees — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -7176,8 +7191,8 @@
   {
     "question": "Deuce Right, St Louis — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -7187,10 +7202,10 @@
   {
     "question": "Deuce Right, St Louis — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Drag",
-      "Screen"
+      "Dig",
+      "Drag"
     ],
     "correct": "Drag",
     "role": "H"
@@ -7198,10 +7213,10 @@
   {
     "question": "Deuce Right, St Louis — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Cross",
       "Deep out",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Cross",
     "role": "Y"
@@ -7209,8 +7224,8 @@
   {
     "question": "Deuce Right, St Louis — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Grass Post",
       "Screen"
     ],
@@ -7220,10 +7235,10 @@
   {
     "question": "Deuce Right, St Louis — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -7233,7 +7248,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7242,9 +7257,9 @@
   {
     "question": "Trey Right, Y, Orlando — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -7254,9 +7269,9 @@
     "question": "Trey Right, Y, Orlando — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7266,7 +7281,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7275,10 +7290,10 @@
   {
     "question": "Trey Right, Y, Orlando — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -7286,8 +7301,8 @@
   {
     "question": "Trey Right, Pacers — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -7298,9 +7313,9 @@
     "question": "Trey Right, Pacers — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -7309,9 +7324,9 @@
     "question": "Trey Right, Pacers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7321,7 +7336,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7330,10 +7345,10 @@
   {
     "question": "Trey Right, Pacers — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -7341,10 +7356,10 @@
   {
     "question": "Trey  Right, Baltimore — what does X do?",
     "options": [
-      "Block",
       "Deep out",
       "Dig",
-      "Screen"
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Dig",
     "role": "X"
@@ -7352,9 +7367,9 @@
   {
     "question": "Trey  Right, Baltimore — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Deep out",
@@ -7363,9 +7378,9 @@
   {
     "question": "Trey  Right, Baltimore — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Jet motion",
+      "Dig",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -7374,8 +7389,8 @@
   {
     "question": "Trey  Right, Baltimore — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -7385,10 +7400,10 @@
   {
     "question": "Trey  Right, Baltimore — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -7396,8 +7411,8 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Fade",
       "Screen"
     ],
@@ -7407,9 +7422,9 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Screen",
+      "Dig",
       "Slant"
     ],
     "correct": "Slant",
@@ -7418,10 +7433,10 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does Y do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Hitch",
-      "Jet motion"
+      "Dig",
+      "Hitch"
     ],
     "correct": "Hitch",
     "role": "Y"
@@ -7429,8 +7444,8 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Glance",
       "Screen"
     ],
@@ -7440,9 +7455,9 @@
   {
     "question": "Trey Right, Y, Pittsburgh — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Rail",
+      "Counter",
+      "Freeze",
+      "Play Action ",
       "Shoot"
     ],
     "correct": "Shoot",
@@ -7453,7 +7468,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7462,9 +7477,9 @@
   {
     "question": "Trey Left, Colorado  — what does H do?",
     "options": [
-      "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Screen",
@@ -7474,9 +7489,9 @@
     "question": "Trey Left, Colorado  — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7486,7 +7501,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7495,10 +7510,10 @@
   {
     "question": "Trey Left, Colorado  — what does RB do?",
     "options": [
-      "Block",
-      "Outside zone",
-      "Play Action ",
-      "Rail"
+      "C gap run",
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Play Action ",
     "role": "RB"
@@ -7508,7 +7523,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7518,9 +7533,9 @@
     "question": "Spread, Orlando — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -7528,10 +7543,10 @@
   {
     "question": "Spread, Orlando — what does Y do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Bubble",
     "role": "Y"
@@ -7541,7 +7556,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7550,10 +7565,10 @@
   {
     "question": "Spread, Orlando — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -7563,7 +7578,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7572,9 +7587,9 @@
   {
     "question": "Deuce Right, Magic — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -7584,9 +7599,9 @@
     "question": "Deuce Right, Magic — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7596,7 +7611,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7605,10 +7620,10 @@
   {
     "question": "Deuce Right, Magic — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -7618,7 +7633,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7627,9 +7642,9 @@
   {
     "question": "Trey Right, Y, Orlando — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -7639,9 +7654,9 @@
     "question": "Trey Right, Y, Orlando — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7651,7 +7666,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7660,10 +7675,10 @@
   {
     "question": "Trey Right, Y, Orlando — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -7671,10 +7686,10 @@
   {
     "question": "Deuce Right, Nets, Smoke — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -7683,9 +7698,9 @@
     "question": "Deuce Right, Nets, Smoke — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -7694,9 +7709,9 @@
     "question": "Deuce Right, Nets, Smoke — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7704,10 +7719,10 @@
   {
     "question": "Deuce Right, Nets, Smoke — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -7715,10 +7730,10 @@
   {
     "question": "Deuce Right, Nets, Smoke — what does RB do?",
     "options": [
-      "Block",
       "C gap run",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "C gap run",
     "role": "RB"
@@ -7728,7 +7743,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7737,9 +7752,9 @@
   {
     "question": "Deuce Right, Pacers — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -7749,9 +7764,9 @@
     "question": "Deuce Right, Pacers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7761,7 +7776,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7770,10 +7785,10 @@
   {
     "question": "Deuce Right, Pacers — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -7783,7 +7798,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7792,9 +7807,9 @@
   {
     "question": "Trey Right, Indiana — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -7804,9 +7819,9 @@
     "question": "Trey Right, Indiana — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7816,7 +7831,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7825,10 +7840,10 @@
   {
     "question": "Trey Right, Indiana — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -7836,10 +7851,10 @@
   {
     "question": "Spread, Chicago, Smoke — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -7848,9 +7863,9 @@
     "question": "Spread, Chicago, Smoke — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -7859,9 +7874,9 @@
     "question": "Spread, Chicago, Smoke — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7869,10 +7884,10 @@
   {
     "question": "Spread, Chicago, Smoke — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -7880,10 +7895,10 @@
   {
     "question": "Spread, Chicago, Smoke — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
       "Counter",
-      "Outside zone",
-      "Rail"
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Counter",
     "role": "RB"
@@ -7893,7 +7908,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7902,9 +7917,9 @@
   {
     "question": "Spread, Bulls — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -7914,9 +7929,9 @@
     "question": "Spread, Bulls — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7926,7 +7941,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7935,10 +7950,10 @@
   {
     "question": "Spread, Bulls — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
       "Counter",
-      "Outside zone",
-      "Rail"
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Counter",
     "role": "RB"
@@ -7948,7 +7963,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -7958,9 +7973,9 @@
     "question": "Deuce Right, Y, Orlando — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -7969,9 +7984,9 @@
     "question": "Deuce Right, Y, Orlando — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -7979,8 +7994,8 @@
   {
     "question": "Deuce Right, Y, Orlando — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Hitch/Fade",
       "Screen"
     ],
@@ -7990,10 +8005,10 @@
   {
     "question": "Deuce Right, Y, Orlando — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -8001,8 +8016,8 @@
   {
     "question": "Bone, H, Magic — what does X do?",
     "options": [
-      "Block",
       "Deep out",
+      "Dig",
       "Screen",
       "Shoot"
     ],
@@ -8013,9 +8028,9 @@
     "question": "Bone, H, Magic — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -8024,9 +8039,9 @@
     "question": "Bone, H, Magic — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -8036,7 +8051,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8045,10 +8060,10 @@
   {
     "question": "Bone, H, Magic — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
@@ -8058,7 +8073,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8067,9 +8082,9 @@
   {
     "question": "Trey Left, Pacers — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -8079,9 +8094,9 @@
     "question": "Trey Left, Pacers — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -8091,7 +8106,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8100,10 +8115,10 @@
   {
     "question": "Trey Left, Pacers — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -8113,7 +8128,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8122,9 +8137,9 @@
   {
     "question": "Spread, Y, Bulls — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -8134,9 +8149,9 @@
     "question": "Spread, Y, Bulls — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -8146,7 +8161,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8155,10 +8170,10 @@
   {
     "question": "Spread, Y, Bulls — what does RB do?",
     "options": [
-      "Block",
+      "C gap run",
       "Counter",
-      "Outside zone",
-      "Rail"
+      "Freeze",
+      "Play Action "
     ],
     "correct": "Counter",
     "role": "RB"
@@ -8166,10 +8181,10 @@
   {
     "question": "Spread, Nets, Smoke — what does X do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "X"
@@ -8178,9 +8193,9 @@
     "question": "Spread, Nets, Smoke — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -8189,9 +8204,9 @@
     "question": "Spread, Nets, Smoke — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -8199,10 +8214,10 @@
   {
     "question": "Spread, Nets, Smoke — what does Z do?",
     "options": [
-      "Block",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig",
+      "Screen",
+      "Sluggo"
     ],
     "correct": "Screen",
     "role": "Z"
@@ -8210,10 +8225,10 @@
   {
     "question": "Spread, Nets, Smoke — what does RB do?",
     "options": [
-      "Block",
       "C gap run",
-      "Outside zone",
-      "Rail"
+      "Counter",
+      "Freeze",
+      "Play Action "
     ],
     "correct": "C gap run",
     "role": "RB"
@@ -8223,7 +8238,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8233,9 +8248,9 @@
     "question": "Spread, Indiana — what does H do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Screen"
+      "Dig"
     ],
     "correct": "Block",
     "role": "H"
@@ -8243,10 +8258,10 @@
   {
     "question": "Spread, Indiana — what does Y do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
-      "Jet motion"
+      "Dig",
+      "Jet Block"
     ],
     "correct": "Bubble",
     "role": "Y"
@@ -8256,7 +8271,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8265,10 +8280,10 @@
   {
     "question": "Spread, Indiana — what does RB do?",
     "options": [
-      "Block",
+      "Counter",
+      "Freeze",
       "Inside zone",
-      "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Inside zone",
     "role": "RB"
@@ -8278,7 +8293,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8287,9 +8302,9 @@
   {
     "question": "Deuce Right, Magic — what does H do?",
     "options": [
-      "Block",
       "Bubble",
       "Deep out",
+      "Dig",
       "Screen"
     ],
     "correct": "Bubble",
@@ -8299,9 +8314,9 @@
     "question": "Deuce Right, Magic — what does Y do?",
     "options": [
       "Block",
+      "Bubble",
       "Deep out",
-      "Freeze",
-      "Jet motion"
+      "Dig"
     ],
     "correct": "Block",
     "role": "Y"
@@ -8311,7 +8326,7 @@
     "options": [
       "Block",
       "Deep out",
-      "Freeze",
+      "Dig",
       "Screen"
     ],
     "correct": "Block",
@@ -8320,46 +8335,42 @@
   {
     "question": "Deuce Right, Magic — what does RB do?",
     "options": [
-      "Block",
-      "Inside zone",
+      "Counter",
+      "Freeze",
       "Outside zone",
-      "Rail"
+      "Play Action "
     ],
     "correct": "Outside zone",
     "role": "RB"
   }
 ];
 
-    
-const correctSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sounds/correct.wav');
-const wrongSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sounds/wrong.wav');
-
+    const correctSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sounds/correct.wav');
+    const wrongSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sounds/wrong.wav');
 
     let filteredQuestions = [];
     let current = 0;
     let score = 0;
     let maxScore = 0;
-    let startTime = Date.now();
 
     function startQuiz(role) {
+      
+    if (role === 'QB') {
+      filteredQuestions = questions;
+    } else {
       filteredQuestions = questions.filter(q => q.role === role);
+    }
+    
       filteredQuestions = filteredQuestions.sort(() => Math.random() - 0.5);
       current = 0;
       score = 0;
       maxScore = 0;
       document.getElementById("role-select").style.display = "none";
-      document.getElementById("quiz").style.display = "block";
-      updateTimer();
+      document.getElementById("quiz").style.display = "flex";
       loadQuestion();
     }
 
-    function updateTimer() {
-      const now = Date.now();
-      const seconds = Math.floor((now - startTime) / 1000);
-      document.getElementById("timer").innerText = "Time: " + seconds + "s";
-      requestAnimationFrame(updateTimer);
-    }
-
+    
     function loadQuestion() {
       const q = filteredQuestions[current];
       document.getElementById("question").innerText = q.question;
@@ -8367,6 +8378,7 @@ const wrongSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sound
       options.innerHTML = "";
       q.options.forEach(opt => {
         const btn = document.createElement("button");
+        btn.className = "option";
         btn.innerText = opt;
         btn.onclick = () => checkAnswer(opt, btn);
         options.appendChild(btn);
@@ -8375,7 +8387,7 @@ const wrongSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sound
 
     function checkAnswer(answer, button) {
       const q = filteredQuestions[current];
-      const buttons = document.querySelectorAll("button");
+      const buttons = document.querySelectorAll(".option");
 
       buttons.forEach(btn => {
         btn.disabled = true;
@@ -8396,6 +8408,7 @@ const wrongSound = new Audio('https://cdn.jsdelivr.net/gh/jshawl/just-some-sound
       }
 
       document.getElementById("score").innerText = "Score: " + score;
+      document.getElementById("high-score").innerText = "High Score: " + maxScore;
 
       setTimeout(() => {
         current = (current + 1) % filteredQuestions.length;
